@@ -1,0 +1,51 @@
+<!-- simple-todos.html -->
+<head>
+  <title>Todo List</title>
+</head>
+
+<body>
+  <div class="container">
+	<header>
+	  <h1>Todo List</h1>
+
+	  <!-- add a form below the h1 -->
+	  <form class="new-task">
+	    <input type="text" name="text" placeholder="Type to add new tasks" />
+	  </form>
+	</header>
+	<table>
+		<thead>
+			<th>Requests</th>
+			<th>ErrorID</th>
+			<th>Hint</th>
+			<th>Upvotes</th>
+		</thead>
+	      {{#each tasks}}
+	        {{> task}}
+	      {{/each}}
+	</table>
+  </div>
+</body>
+
+<template name="task">
+  <tr>
+  	<td>
+		Requests 
+	</td>
+   	<td> <!--class="{{#if checked}}checked{{/if}}"-->
+	    <!--button class="delete">&times;</button-->
+	    <span class="text">{{text}}</span>
+	</td>
+	<td>
+		<ul>
+			<li>Something</li>
+			<li>Something</li>
+			<li>Something</li>
+		</ul>
+	</td>
+	<td>
+	    <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
+	    Number_of_upvotes
+	</td>
+  </tr>
+</template>
