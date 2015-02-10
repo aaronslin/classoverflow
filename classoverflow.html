@@ -18,7 +18,6 @@
 			<th>Requests</th>
 			<th>ErrorID</th>
 			<th>Hint</th>
-			<th>Upvotes</th>
 		</thead>
 	      {{#each tasks}}
 	        {{> task}}
@@ -38,14 +37,14 @@
 	</td>
 	<td>
 		<ul>
-			<li>Something</li>
-			<li>Something</li>
-			<li>Something</li>
+      <li><form class="new-task">
+  	    <input type="text" name="text" placeholder="Hint" />
+  	  </form></li>
+			<li>Something<button>Upvote</button></li>
+			<li>Something<button>Upvote</button></li>
+			<li>Something<button>Upvote</button></li>
 		</ul>
 	</td>
-	<td>
-	    <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
-	    Number_of_upvotes
-	</td>
+
   </tr>
 </template>
