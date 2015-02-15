@@ -5,21 +5,23 @@ if (Meteor.isClient) {
   // This code only runs on the client
   Template.body.helpers({
     tasks: function () {
-      return Tasks.find({});
+      return Tasks.find({}, {sort: {errorID: 1}});
     }
   });
 
   Template.body.events({
     "submit .new-task": function (event) {
-      // This function is called when the new task form is submitted
+      // This function is called when the search for ID/submit new ID blank is submitted
 
-      console.log(event);
-      var text = event.target.text.value;
+      var query = event.target.text.value;
 
-      Tasks.insert({
-        text: text,
-        createdAt: new Date() // current time
-      });
+      // IF query NOT FOUND IN errorID:
+        Tasks.insert({
+          errorID: query,
+          createdAt: new Date() // current time
+        });
+      // ELSE
+        // Navigate to that part
 
       // Clear form
       event.target.text.value = "";
