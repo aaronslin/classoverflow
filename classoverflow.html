@@ -9,7 +9,7 @@
 	  <h1>Todo List</h1>
 
 	  <!-- add a form below the h1 -->
-	  <form class="new-error-entry">
+	  <form class="new-error-entry new-entry">
 	    <input type="text" name="text" placeholder="ErrorID" />
 	  </form>
 	</header>
@@ -28,24 +28,24 @@
 
 <template name="error_entry">
   <tr>
-  	<td>
-		Requests
+  	<td class="requests_td">
+		0
 	</td>
-   	<td> <!--class="{{#if checked}}checked{{/if}}"-->
+   	<td class="errorID_td"> 
+   		<!--class="{{#if checked}}checked{{/if}}"-->
 	    <!--button class="delete">&times;</button-->
 	    <span class="text">{{errorID}}</span>
 	</td>
-	<td>
+	<td class="hints_td">
 		<ul>
-      		<li><form class="new-error-entry">
+      		<li><form class="new-hint-entry new-entry">
 		  	    <input type="text" name="text" placeholder="Hint" />
 		  	  </form></li>
-			<li>Something<button>Upvote</button></li>
+			<li>Something<button class="upvote">&plus;1</button></li>
 		</ul>
 	</td>
 	<td>
 		<button class="delete">&times;</button>
 	</td>
-
   </tr>
 </template>

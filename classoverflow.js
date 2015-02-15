@@ -9,6 +9,9 @@ if (Meteor.isClient) {
   Template.body.helpers({
     errors: function () {
       return Errors.find({}, {sort: {errorID: 1}});
+    },
+    hints: function () {
+      return Hints.find({errorID:"6_EECS"}, {sort: {upvotes: 1}});
     }
   });
 
@@ -26,14 +29,22 @@ if (Meteor.isClient) {
         });
       }
       else {
-        // navigate
+        // todo: navigate
       }
 
-      // Clear form
-      event.target.text.value = "";
+      event.target.text.value = ""; // Clear form
+      return false;                 // Prevent default form submit
+    },
+    "submit .new-hint-entry": function(event) {
+      var hint = event.target.text.value;
+      console.log(event);
 
-      // Prevent default form submit
-      return false;
+      Hints.insert({
+        errorID: "6_EECS", // todo: grab the errorID of the row
+        createdAt: new Date(),
+        hintMsg: hint,
+        upvotes: 0
+      });
     }
   });
 

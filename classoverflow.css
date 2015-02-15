@@ -49,7 +49,7 @@ form {
   position: relative;
 }
 
-.new-error-entry input {
+.new-entry input {
   box-sizing: border-box;
   padding: 10px 0;
   background: transparent;
@@ -59,7 +59,7 @@ form {
   font-size: 1em;
 }
 
-.new-error-entry input:focus{
+.new-entry input:focus{
   outline: 0;
 }
 
@@ -69,6 +69,20 @@ ul {
   background: white;
 }
 
+td {
+  vertical-align: text-top;
+}
+
+.requests_td {
+  text-align: center;
+  width: 100px;
+}
+
+.errorID_td {
+  width: 150px;
+  text-align: center;
+}
+
 .delete {
   float: right;
   font-weight: bold;
@@ -76,6 +90,16 @@ ul {
   font-size: 1em;
   border: none;
   position: relative;
+}
+
+.upvote {
+  float: right;
+  font-weight: bold;
+  background: none;
+  font-size: 1em;
+  border: none;
+  position: relative;
+
 }
 
 li {
@@ -120,7 +144,7 @@ header .hide-completed {
     clear: both;
   }
 
-  .new-error-entry input {
+  .new-entry input {
     padding-bottom: 5px;
   }
 }
