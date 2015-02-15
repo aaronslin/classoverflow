@@ -1,25 +1,28 @@
-// simple-todos.js
-Tasks = new Mongo.Collection("tasks");
+// classoverflow.js
+Errors = new Mongo.Collection("errors");
+  // errorID, createdAt
+Hints = new Mongo.Collection("hints");
+  // errorID, createdAt, hintMsg, upvotes
 
 if (Meteor.isClient) {
   // This code only runs on the client
   Template.body.helpers({
-    tasks: function () {
-      return Tasks.find({}, {sort: {errorID: 1}});
+    errors: function () {
+      return Errors.find({}, {sort: {errorID: 1}});
     }
   });
 
   Template.body.events({
-    "submit .new-task": function (event) {
+    "submit .new-error-entry": function (event) {
       // This function is called when the search for ID/submit new ID blank is submitted
 
       var query = event.target.text.value;
-      var query_count = Tasks.find({"errorID": query}).count();
+      var query_count = Errors.find({"errorID": query}).count();
 
       if (query_count==0) {
-        Tasks.insert({
+        Errors.insert({
           errorID: query,
-          createdAt: new Date() // current time
+          createdAt: new Date()
         });
       }
       else {
@@ -34,13 +37,13 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.task.events({
+  Template.error_entry.events({
     "click .toggle-checked": function () {
       // Set the checked property to the opposite of its current value
-      Tasks.update(this._id, {$set: {checked: ! this.checked}});
+      Errors.update(this._id, {$set: {checked: ! this.checked}});
     },
     "click .delete": function () {
-      Tasks.remove(this._id);
+      Errors.remove(this._id);
     }
   });
 }

@@ -1,4 +1,4 @@
-<!-- simple-todos.html -->
+<!-- classoverflow.html -->
 <head>
   <title>Todo List</title>
 </head>
@@ -9,7 +9,7 @@
 	  <h1>Todo List</h1>
 
 	  <!-- add a form below the h1 -->
-	  <form class="new-task">
+	  <form class="new-error-entry">
 	    <input type="text" name="text" placeholder="ErrorID" />
 	  </form>
 	</header>
@@ -19,14 +19,14 @@
 			<th>ErrorID</th>
 			<th>Hint</th>
 		</thead>
-	      {{#each tasks}}
-	        {{> task}}
+	      {{#each errors}}
+	        {{> error_entry}}
 	      {{/each}}
 	</table>
   </div>
 </body>
 
-<template name="task">
+<template name="error_entry">
   <tr>
   	<td>
 		Requests
@@ -37,7 +37,7 @@
 	</td>
 	<td>
 		<ul>
-      		<li><form class="new-task">
+      		<li><form class="new-error-entry">
 		  	    <input type="text" name="text" placeholder="Hint" />
 		  	  </form></li>
 			<li>Something<button>Upvote</button></li>
