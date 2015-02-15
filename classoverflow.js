@@ -14,14 +14,17 @@ if (Meteor.isClient) {
       // This function is called when the search for ID/submit new ID blank is submitted
 
       var query = event.target.text.value;
+      var query_count = Tasks.find({"errorID": query}).count();
 
-      // IF query NOT FOUND IN errorID:
+      if (query_count==0) {
         Tasks.insert({
           errorID: query,
           createdAt: new Date() // current time
         });
-      // ELSE
-        // Navigate to that part
+      }
+      else {
+        // navigate
+      }
 
       // Clear form
       event.target.text.value = "";
