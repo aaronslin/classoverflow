@@ -1,12 +1,12 @@
 <!-- classoverflow.html -->
 <head>
-  <title>Dear Beta</title>
+  <title>Todo List</title>
 </head>
 
 <body>
   <div class="container">
 	<header>
-	  <h1>Dear Beta: An Advice Column for 6.004</h1>
+	  <h1>Todo List</h1>
 
 	  <!-- add a form below the h1 -->
 	  <form class="new-error-entry new-entry">
@@ -31,20 +31,23 @@
   	<td class="requests_td">
 		0
 	</td>
-   	<td class="errorID_td">
+   	<td class="errorID_td"> 
    		<!--class="{{#if checked}}checked{{/if}}"-->
 	    <!--button class="delete">&times;</button-->
 	    <span class="text">{{errorID}}</span>
 	</td>
 	<td class="hints_td">
-		<ul>
-      		<li><form class="new-hint-entry new-entry">
-		  	    <input type="text" name="text" placeholder="Hint" />
-		  	 	</form></li>
-			{{#each hints}}
-				{{> hint_entry}}
-			{{/each}}
-		</ul>
+		<table>
+  			<tr>
+  				<td><form class="new-hint-entry new-entry">
+	  	    		<input type="text" name="text" placeholder="Hint" />
+	  	 			</form>
+	  	 		</td>
+	  	 	</tr>
+		{{#each hints}}
+			{{> hint_entry}}
+		{{/each}}
+		</table>
 	</td>
 	<td>
 		<button class="delete">&times;</button>
@@ -53,6 +56,5 @@
 </template>
 
 <template name="hint_entry">
-	<!--li><span class='upvotebadge'>{{upvotes}} upvotes</span> {{hintMsg}}<button class="upvote">&plus;1</button></li-->
-  <li>{{hintID}}</li>
+	<tr><td>{{hintMsg}}</td><td>{{upvotes}}<button class="upvote">&plus;1</button></td></tr>
 </template>
