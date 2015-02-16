@@ -74,6 +74,11 @@ if (Meteor.isClient) {
     },
     "click .delete": function () {
       Errors.remove(this._id);
+    },
+    'click .upvote': function(e) {
+      //e.preventDefault();
+      //Meteor.call('upvote', this._id);
+      alert('upvote',this._id, e)
     }
   });
 }
