@@ -1,7 +1,7 @@
 // classoverflow.js
 Errors = new Mongo.Collection("errors");
   // errorID, createdAt
-Hints = new Mongo.Collection("hints");
+// Hints = new Mongo.Collection("hints");
   // errorID, createdAt, hintMsg, upvotes
 
 if (Meteor.isClient) {
@@ -9,10 +9,10 @@ if (Meteor.isClient) {
   Template.body.helpers({
     errors: function () {
       return Errors.find({}, {sort: {errorID: 1}});
-    },
-    hints: function () {
-      return Hints.find({errorID:"6_EECS"}, {sort: {upvotes: 1}});
     }
+    // hints: function () {
+    //   return Hints.find({errorID:"6_EECS"}, {sort: {upvotes: 1}});
+    // }
   });
 
   Template.body.events({
@@ -25,7 +25,8 @@ if (Meteor.isClient) {
       if (query_count==0) {
         Errors.insert({
           errorID: query,
-          createdAt: new Date()
+          createdAt: new Date(),
+          hints: new Array()
         });
       }
       else {
@@ -39,12 +40,10 @@ if (Meteor.isClient) {
       var hint = event.target.text.value;
       console.log(event);
 
-      Hints.insert({
-        errorID: "6_EECS", // todo: grab the errorID of the row
-        createdAt: new Date(),
-        hintMsg: hint,
-        upvotes: 0
-      });
+      Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
+
+      event.target.text.value = "";
+      return false;
     }
   });
 
