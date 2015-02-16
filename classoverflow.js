@@ -9,10 +9,10 @@ if (Meteor.isClient) {
   Template.body.helpers({
     errors: function () {
       return Errors.find({}, {sort: {errorID: 1}});
+    },
+    hints: function () {
+      return Errors.find({_id: this.id}, {'hints.hintMsg': 1, 'hints.upvotes': 1, _id:0}).sort({'hints.upvotes': 1});
     }
-    // hints: function () {
-    //   return Hints.find({errorID:"6_EECS"}, {sort: {upvotes: 1}});
-    // }
   });
 
   Template.body.events({
@@ -41,6 +41,26 @@ if (Meteor.isClient) {
       console.log(event);
 
       Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
+      /*var row = event.target;
+      while (row.parentNode && row.tagName.toLowerCase()!="tr") {
+        row = row.parentNode;
+      }
+      var errorDocs=Errors.find({"errorID": row.id});
+      alert(errorDocs.next());
+
+      if (errorDocs.count()==1) {
+        var aoeu = errorDocs.toArray()[0];
+        alert(aoeu);
+        aoeu.hints.insert({
+          hintMsg: hint,
+          upvotes:0
+        });
+      }
+      else {
+        alert("Something went wrong!");
+      }
+
+      alert("aoeu");*/
 
       event.target.text.value = "";
       return false;

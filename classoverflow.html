@@ -40,12 +40,18 @@
 		<ul>
       		<li><form class="new-hint-entry new-entry">
 		  	    <input type="text" name="text" placeholder="Hint" />
-		  	  </form></li>
-			<li>Something<button class="upvote">&plus;1</button></li>
+		  	 	</form></li>
+			{{#each hints}}
+				{{> hint_entry}}
+			{{/each}}
 		</ul>
 	</td>
 	<td>
 		<button class="delete">&times;</button>
 	</td>
   </tr>
+</template>
+
+<template name="hint_entry">
+	<li>{{hintMsg}} {{upvotes}}<button class="upvote">&plus;1</button></li>
 </template>
