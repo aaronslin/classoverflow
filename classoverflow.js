@@ -1,7 +1,7 @@
 // classoverflow.js
 Errors = new Mongo.Collection("errors");
   // errorID, createdAt
-// Hints = new Mongo.Collection("hints");
+Hints = new Mongo.Collection("hints");
   // errorID, createdAt, hintMsg, upvotes
 
 if (Meteor.isClient) {
@@ -11,7 +11,9 @@ if (Meteor.isClient) {
       return Errors.find({}, {sort: {errorID: 1}});
     },
     hints: function () {
-      return Errors.find({_id: this.id}, {'hints.hintMsg': 1, 'hints.upvotes': 1, _id:0}).sort({'hints.upvotes': 1});
+      //return Errors.find({_id: this.id}, {'hints.hintMsg': 1, 'hints.upvotes': 1, _id:0}).sort({'hints.upvotes': 1});
+      //console.log(this._id)
+      //return Errors.find({_id: this._id}, {'hints': 1, _id:0});
     }
   });
 
@@ -38,9 +40,22 @@ if (Meteor.isClient) {
     },
     "submit .new-hint-entry": function(event) {
       var hint = event.target.text.value;
-      console.log(event);
+      //console.log(event);
+      var errordbkey = this._id;
+      var hintID;
+      Hints.insert({
+        errorID: errordbkey, //this.errorID,
+        hintMsg: hint,
+        upvotes: 0
+      },function (err, object) {
+        hintID = object;
+        //console.log(hintID);
+        //console.log(errordbkey);
+        Errors.update(errordbkey, {$push: {hints: {'hintID':hintID} }});
+      });
 
-      Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
+
+      //Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
       /*var row = event.target;
       while (row.parentNode && row.tagName.toLowerCase()!="tr") {
         row = row.parentNode;
@@ -75,10 +90,14 @@ if (Meteor.isClient) {
     "click .delete": function () {
       Errors.remove(this._id);
     },
-    'click .upvote': function(e) {
+    'click .upvote': function(event, template) {
       //e.preventDefault();
       //Meteor.call('upvote', this._id);
-      alert('upvote',this._id, e)
+      //Errors.update(this._id, {$inc: {upvotes: 1}});
+      //Errors.update(this._id, {$inc: {hints: {hintMsg: upvotes: 1}}})
+      Errors.update(this._id, {$inc: {hints: {hintMsg: hint, upvotes: 0}}});
+      console.log('upvote',this._id, event, template, this)
+
     }
   });
 }
