@@ -10,9 +10,9 @@ if (Meteor.isClient) {
     errors: function () {
       return Errors.find({}, {sort: {errorID: 1}});
     },
-    hints: function () {
-      return Errors.find({_id: this.id}, {'hints.hintMsg': 1, 'hints.upvotes': 1, _id:0}).sort({'hints.upvotes': 1});
-    }
+    //hints: function () {
+    //  return Errors.find({_id: this.id}, {'hints.hintMsg': 1, 'hints.upvotes': 1, _id:0}).sort({'hints.upvotes': 1});
+    //}
   });
 
   Template.body.events({
@@ -39,8 +39,14 @@ if (Meteor.isClient) {
     "submit .new-hint-entry": function(event) {
       var hint = event.target.text.value;
       console.log(event);
+      var errorDBid = this._id;
 
-      Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
+      Errors.update(errorDBid, {$push: {hints: {
+          _id: ObjectId(),
+          hintMsg: hint, 
+          upvotes: 0, 
+          parent: errorDBid
+      }}});
 
       event.target.text.value = "";
       return false;
@@ -56,9 +62,8 @@ if (Meteor.isClient) {
       Errors.remove(this._id);
     },
     "click .upvote": function() {
-      console.log(this);
-      this.upvotes+=1;
-      //Errors.update({}, {$inc: {upvotes: 1}});
+      console.log(this._id);
+      Errors.update(this.parent, {$set: {"hints.$.hintMsg": "asdf"}});
     }
   });
 }
