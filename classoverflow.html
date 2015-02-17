@@ -41,18 +41,26 @@
       		<li><form class="new-hint-entry new-entry">
 		  	    <input type="text" name="text" placeholder="Hint" />
 		  	 	</form></li>
-			{{#each hints}}
-				{{> hint_entry}}
+			{{#each hintIDs}}
+				{{#each hints}}
+					{{> hint_entry}}
+				{{/each}}
 			{{/each}}
 		</ul>
 	</td>
 	<td>
-		<button class="delete">&times;</button>
+		<button class="delete delete_error">&times;</button>
 	</td>
   </tr>
 </template>
 
 <template name="hint_entry">
 	<!--li><span class='upvotebadge'>{{upvotes}} upvotes</span> {{hintMsg}}<button class="upvote">&plus;1</button></li-->
-  <li>{{hintID}}</li>
+  <li>
+  	{{#each getHintInfo hintID}}
+  		<span class="upvotes">{{upvotes}} upvotes</span> | {{hintMsg}}
+  	{{/each}}
+  	<button class="upvote">&plus;1</button>
+  	<button class="delete delete_hint">&times;</button>
+  </li>
 </template>
