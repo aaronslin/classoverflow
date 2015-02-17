@@ -25,7 +25,6 @@ if (Meteor.isClient) {
 
   Template.hint_entry.helpers({
     getHintInfo: function(hint) {
-      console.log(Hints.find({"_id":hint}));
       return Hints.find({"_id": hint});
     }
   });
@@ -88,6 +87,9 @@ if (Meteor.isClient) {
       //Errors.update(this.parent, {$pull: {'hints': this.hintID}});
     },
     "click .upvote": function(event, template) {
+      console.log(this);
+      var hintID = this.hintID;
+      Hints.update({"_id":this.hintID},{$inc: {upvotes:1}});
       //e.preventDefault();
       //Meteor.call('upvote', this._id);
       //Errors.update(this._id, {$inc: {upvotes: 1}});
