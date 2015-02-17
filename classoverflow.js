@@ -9,25 +9,28 @@ if (Meteor.isClient) {
   Template.body.helpers({
     errors: function () {
       return Errors.find({}, {sort: {errorID: 1}});
-    },
-    hints: function () {
-      //return Errors.find({_id: this.id}, {'hints.hintMsg': 1, 'hints.upvotes': 1, _id:0}).sort({'hints.upvotes': 1});
-      //console.log(this._id)
-      //return Errors.find({_id: this._id}, {'hints': 1, _id:0});
     }
   });
 
   Template.error_entry.helpers({
     hintIDs: function () {
-      return Errors.find({"_id": this._id}, {hints:1, _id:0});
+      return Errors.find({"_id": this._id}); 
+    },
+    sortedHints: function() {
+      var hintIDList = this.hints.map(function(hintIDObject) {
+        return hintIDObject.hintID;
+      });
+      return Hints.find({"_id": {$in: hintIDList}}, {sort: {upvotes: -1}});
     }
   });
 
+  // BEGIN EXTINCT
   Template.hint_entry.helpers({
     getHintInfo: function(hint) {
       return Hints.find({"_id": hint});
     }
   });
+  // END EXTINCT
 
   Template.body.events({
     "submit .new-error-entry": function (event) {
@@ -79,24 +82,22 @@ if (Meteor.isClient) {
       Errors.update(this._id, {$set: {checked: ! this.checked}});
     },
     "click .delete_error": function () {
+      // For each hint stored, delete the hint
       Errors.remove(this._id);
     },
     "click .delete_hint": function() {
-      //alert(this);
-      //Hints.remove({"_id:": this});
+      console.log(this);
+      //Hints.remove({"_id:": this.hintID});
       //Errors.update(this.parent, {$pull: {'hints': this.hintID}});
     },
     "click .upvote": function(event, template) {
-      console.log(this);
-      var hintID = this.hintID;
-      Hints.update({"_id":this.hintID},{$inc: {upvotes:1}});
+      Hints.update({"_id":this._id},{$inc: {upvotes:1}});
       //e.preventDefault();
       //Meteor.call('upvote', this._id);
       //Errors.update(this._id, {$inc: {upvotes: 1}});
       //Errors.update(this._id, {$inc: {hints: {hintMsg: upvotes: 1}}})
       //Errors.update(this._id, {$inc: {hints: {hintMsg: hint, upvotes: 0}}});
       //console.log('upvote',this._id, event, template, this)
-
     }
   });
 }
