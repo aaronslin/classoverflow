@@ -4,6 +4,14 @@ Errors = new Mongo.Collection("errors");
 Hints = new Mongo.Collection("hints");
   // errorID, createdAt, hintMsg, upvotes
 
+/*$.fn.scrollView = function () {
+  return this.each(function(){
+    $('html, body').animate({
+      scrollTop:$(this).offset().top
+    },1000);
+  });
+}*/
+
 if (Meteor.isClient) {
   // This code only runs on the client
   Template.body.helpers({
@@ -43,11 +51,14 @@ if (Meteor.isClient) {
         Errors.insert({
           errorID: query,
           createdAt: new Date(),
-          hints: new Array()
+          hints: new Array(),
+          numRequests: 1
         });
       }
       else {
         // todo: navigate
+        //console.log($())
+        $('#errorID-'+query).scrollView();
       }
 
       event.target.text.value = ""; // Clear form
@@ -98,6 +109,9 @@ if (Meteor.isClient) {
       //Errors.update(this._id, {$inc: {hints: {hintMsg: upvotes: 1}}})
       //Errors.update(this._id, {$inc: {hints: {hintMsg: hint, upvotes: 0}}});
       //console.log('upvote',this._id, event, template, this)
+    },
+    "click .addRequest": function(event, template) {
+        Errors.update({"_id":this._id},{$inc: {numRequests:1}})
     }
   });
 }

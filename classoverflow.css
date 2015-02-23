@@ -98,7 +98,7 @@ td {
   position: relative;
 }
 
-.upvote {
+.upvote, .addRequest {
   float: right;
   font-weight: bold;
   background: none;

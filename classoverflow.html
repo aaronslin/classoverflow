@@ -1,6 +1,7 @@
 <!-- classoverflow.html -->
 <head>
   <title>Dear Beta</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -27,9 +28,9 @@
 </body>
 
 <template name="error_entry">
-  <tr id="{{errorID}}">
+  <tr id="errorID-{{_id}}">
   	<td class="requests_td">
-		0
+		{{numRequests}}<button class="addRequest">&plus;1</button>
 	</td>
    	<td class="errorID_td">
    		<!--class="{{#if checked}}checked{{/if}}"-->
