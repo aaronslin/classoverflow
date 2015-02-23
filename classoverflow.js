@@ -10,11 +10,11 @@ if (Meteor.isClient) {
     errors: function () {
       return Errors.find({}, {sort: {errorID: 1}});
     },
-    hints: function () {
+    //hints: function () {
       //return Errors.find({_id: this.id}, {'hints.hintMsg': 1, 'hints.upvotes': 1, _id:0}).sort({'hints.upvotes': 1});
       //console.log(this._id)
       //return Errors.find({_id: this._id}, {'hints': 1, _id:0});
-    }
+    //}
   });
 
   Template.body.events({
@@ -22,13 +22,14 @@ if (Meteor.isClient) {
       // This function is called when the search for ID/submit new ID blank is submitted
 
       var query = event.target.text.value;
+      //make this more lenient to user differences
       var query_count = Errors.find({"errorID": query}).count();
 
       if (query_count==0) {
         Errors.insert({
           errorID: query,
           createdAt: new Date(),
-          hints: new Array()
+          //hints: new Array()
         });
       }
       else {
@@ -47,12 +48,12 @@ if (Meteor.isClient) {
         errorID: errordbkey, //this.errorID,
         hintMsg: hint,
         upvotes: 0
-      },function (err, object) {
+      }); /*,function (err, object) {
         hintID = object;
         //console.log(hintID);
         //console.log(errordbkey);
         Errors.update(errordbkey, {$push: {hints: {'hintID':hintID} }});
-      });
+      });*/
 
 
       //Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
@@ -82,6 +83,11 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.error_entry.helpers({
+    getHints : function() {
+      return Hints.find({'errorID':this._id}) //this._id is error id
+    }
+  });
   Template.error_entry.events({
     "click .toggle-checked": function () {
       // Set the checked property to the opposite of its current value
@@ -90,6 +96,17 @@ if (Meteor.isClient) {
     "click .delete": function () {
       Errors.remove(this._id);
     },
+    /*'click .upvote': function(event, template) {
+      //e.preventDefault();
+      //Meteor.call('upvote', this._id);
+      //Errors.update(this._id, {$inc: {upvotes: 1}});
+      //Errors.update(this._id, {$inc: {hints: {hintMsg: upvotes: 1}}})
+      Errors.update(this._id, {$inc: {hints: {hintMsg: hint, upvotes: 0}}});
+      console.log('upvote',this._id, event, template, this)
+
+    }*/
+  });
+  Template.hint_entry.events({
     'click .upvote': function(event, template) {
       //e.preventDefault();
       //Meteor.call('upvote', this._id);

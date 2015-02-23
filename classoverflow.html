@@ -16,7 +16,7 @@
 	<table>
 		<thead>
 			<th>Requests</th>
-			<th>ErrorID</th>
+			<th>Error</th>
 			<th>Hint</th>
 		</thead>
 	      {{#each errors}}
@@ -41,7 +41,7 @@
       		<li><form class="new-hint-entry new-entry">
 		  	    <input type="text" name="text" placeholder="Hint" />
 		  	 	</form></li>
-			{{#each hints}}
+			{{#each getHints}}
 				{{> hint_entry}}
 			{{/each}}
 		</ul>
@@ -54,5 +54,5 @@
 
 <template name="hint_entry">
 	<!--li><span class='upvotebadge'>{{upvotes}} upvotes</span> {{hintMsg}}<button class="upvote">&plus;1</button></li-->
-  <li>{{hintID}}</li>
+  <li>{{hintMsg}}{{upvotes}}</li>
 </template>
