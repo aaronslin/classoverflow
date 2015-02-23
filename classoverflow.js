@@ -9,6 +9,12 @@ if (Meteor.isClient) {
   Template.body.helpers({
     errors: function () {
       return Errors.find({}, {sort: {errorID: 1}});
+    }
+  });
+
+  Template.error_entry.helpers({
+    hintIDs: function () {
+      return Errors.find({"_id": this._id}); 
     },
     //hints: function () {
       //return Errors.find({_id: this.id}, {'hints.hintMsg': 1, 'hints.upvotes': 1, _id:0}).sort({'hints.upvotes': 1});
@@ -16,6 +22,14 @@ if (Meteor.isClient) {
       //return Errors.find({_id: this._id}, {'hints': 1, _id:0});
     //}
   });
+
+  // BEGIN EXTINCT
+  Template.hint_entry.helpers({
+    getHintInfo: function(hint) {
+      return Hints.find({"_id": hint});
+    }
+  });
+  // END EXTINCT
 
   Template.body.events({
     "submit .new-error-entry": function (event) {
@@ -54,32 +68,6 @@ if (Meteor.isClient) {
         //console.log(errordbkey);
         Errors.update(errordbkey, {$push: {hints: {'hintID':hintID} }});
       });*/
-
-
-      //Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
-      /*var row = event.target;
-      while (row.parentNode && row.tagName.toLowerCase()!="tr") {
-        row = row.parentNode;
-      }
-      var errorDocs=Errors.find({"errorID": row.id});
-      alert(errorDocs.next());
-
-      if (errorDocs.count()==1) {
-        var aoeu = errorDocs.toArray()[0];
-        alert(aoeu);
-        aoeu.hints.insert({
-          hintMsg: hint,
-          upvotes:0
-        });
-      }
-      else {
-        alert("Something went wrong!");
-      }
-
-      alert("aoeu");*/
-
-      event.target.text.value = "";
-      return false;
     }
   });
 
@@ -93,7 +81,8 @@ if (Meteor.isClient) {
       // Set the checked property to the opposite of its current value
       Errors.update(this._id, {$set: {checked: ! this.checked}});
     },
-    "click .delete": function () {
+    "click .delete_error": function () {
+      // For each hint stored, delete the hint
       Errors.remove(this._id);
     },
     /*'click .upvote': function(event, template) {
@@ -112,9 +101,8 @@ if (Meteor.isClient) {
       //Meteor.call('upvote', this._id);
       //Errors.update(this._id, {$inc: {upvotes: 1}});
       //Errors.update(this._id, {$inc: {hints: {hintMsg: upvotes: 1}}})
-      Errors.update(this._id, {$inc: {hints: {hintMsg: hint, upvotes: 0}}});
-      console.log('upvote',this._id, event, template, this)
-
+      //Errors.update(this._id, {$inc: {hints: {hintMsg: hint, upvotes: 0}}});
+      //console.log('upvote',this._id, event, template, this)
     }
   });
 }
