@@ -10,14 +10,30 @@
 	  <h1>Dear Beta: An Advice Column for 6.004</h1>
 
 	  <!-- add a form below the h1 -->
-	  <form class="new-error-entry new-entry">
-	    <input type="text" name="text" placeholder="ErrorID" />
-	  </form>
+
 	</header>
 	<table>
-		<thead>
+    <thead>
+    <tr>
+      <!--form class="new-error-entry new-entry"-->
+      <td></td>
+      <td>
+      <input type="text" name="text" placeholder="CheckoffFile" id="CheckoffFile" />
+    </td>
+    <td>
+      <input type="text" name="text" placeholder="Nodes" id="Nodes"/>
+    </td>
+    <td>
+      <input type="text" name="text" placeholder="Time" id="Time" />
+    </td>
+      <td><button id="findorrequestbtn">Find or Request Advice</button></td>
+      <!--/form-->
+    </tr>
+
 			<th>Requests</th>
-			<th>ErrorID</th>
+			<th class="error_th">Checkoff File</th>
+      <th class="error_th">Nodes</th>
+      <th class="error_th">Time</th>
 			<th>Hint</th>
 		</thead>
 	      {{#each errors}}
@@ -37,6 +53,18 @@
 	    <!--button class="delete">&times;</button-->
 	    <span class="text">{{errorID}}</span>
 	</td>
+  <td class="errorID_td">
+    <!--class="{{#if checked}}checked{{/if}}"-->
+   <!--button class="delete">&times;</button-->
+   <span class="text">{{node_id}}</span>
+</td>
+<td class="errorID_td">
+  <!--class="{{#if checked}}checked{{/if}}"-->
+ <!--button class="delete">&times;</button-->
+ <span class="text">{{time_id}}</span>
+</td>
+  <td></td>
+  <td></td>
 	<td class="hints_td">
 		<ul>
       		<li><form class="new-hint-entry new-entry">
