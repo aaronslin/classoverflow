@@ -12,24 +12,22 @@
 	  <!-- add a form below the h1 -->
 
 	</header>
+  <form class="new-error-entry new-entry">
+  <table>
+    <tr>
+      <td></td>
+      <td><input type="text" placeholder="CheckoffFile" name="errorCoord0" /></td>
+      <td><input type="text" placeholder="Nodes" name="errorCoord1"/></td>
+      <td><input type="text" placeholder="Time" name="errorCoord2" /></td>
+      <td><button id="findorrequestbtn">Find or Request Advice</button></td>
+    </tr>
+  </table>
+  </form>
+  <br>
+  <br>
+  <br>
 	<table>
     <thead>
-    <tr>
-      <!--form class="new-error-entry new-entry"-->
-      <td></td>
-      <td>
-      <input type="text" name="text" placeholder="CheckoffFile" id="CheckoffFile" />
-    </td>
-    <td>
-      <input type="text" name="text" placeholder="Nodes" id="Nodes"/>
-    </td>
-    <td>
-      <input type="text" name="text" placeholder="Time" id="Time" />
-    </td>
-      <td><button id="findorrequestbtn">Find or Request Advice</button></td>
-      <!--/form-->
-    </tr>
-
 			<th>Requests</th>
 			<th class="error_th">Checkoff File</th>
       <th class="error_th">Nodes</th>
@@ -51,17 +49,17 @@
    	<td class="errorID_td">
    		<!--class="{{#if checked}}checked{{/if}}"-->
 	    <!--button class="delete">&times;</button-->
-	    <span class="text">{{errorID}}</span>
+	    <span class="text">{{errorCoord0}}</span>
 	</td>
   <td class="errorID_td">
     <!--class="{{#if checked}}checked{{/if}}"-->
    <!--button class="delete">&times;</button-->
-   <span class="text">{{node_id}}</span>
+   <span class="text">{{errorCoord1}}</span>
 </td>
 <td class="errorID_td">
   <!--class="{{#if checked}}checked{{/if}}"-->
  <!--button class="delete">&times;</button-->
- <span class="text">{{time_id}}</span>
+ <span class="text">{{errorCoord2}}</span>
 </td>
   <td></td>
   <td></td>

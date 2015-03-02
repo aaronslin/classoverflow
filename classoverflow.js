@@ -16,7 +16,7 @@ if (Meteor.isClient) {
   // This code only runs on the client
   Template.body.helpers({
     errors: function () {
-      return Errors.find({}, {sort: {errorID: 1}});
+      return Errors.find({}, {sort: {errorCoord0: 1, errorCoord1: 1, errorCoord2:1}});
     }
   });
 
@@ -43,25 +43,36 @@ if (Meteor.isClient) {
   Template.body.events({
     "submit .new-error-entry": function (event) {
       // This function is called when the search for ID/submit new ID blank is submitted
-
-      var query = event.target.text.value;
-      var query_count = Errors.find({"errorID": query}).count();
-
+      //event.preventDefault();
+      console.log('error submitted',event.target)
+      var query0 = event.target.errorCoord0.value;
+      var query1 = event.target.errorCoord1.value;
+      var query2 = event.target.errorCoord2.value;
+      var query_count = Errors.find({"errorCoord0": query0, "errorCoord1": query1, "errorCoord2": query2}).count();
+      console.log(query_count)
       if (query_count==0) {
         Errors.insert({
-          errorID: query,
+          //errorID: query,
+          errorCoord0 : query0,
+          errorCoord1 : parseInt(query1),
+          errorCoord2 : parseInt(query2),
           createdAt: new Date(),
           hints: new Array(),
           numRequests: 1
         });
+
+        console.log('We\'ve added this to our database and displayed it.');
       }
       else {
         // todo: navigate
         //console.log($())
-        $('#errorID-'+query).scrollView();
-      }
+        //$('#errorID-'+query).scrollView();
+        console.log('Its here on this (sorted) page!');
+      };
 
-      event.target.text.value = ""; // Clear form
+      event.target.errorCoord0.value = ""; // Clear form
+      event.target.errorCoord1.value = ""; // Clear form
+      event.target.errorCoord2.value = ""; // Clear form
       return false;                 // Prevent default form submit
     },
     "submit .new-hint-entry": function(event) {
