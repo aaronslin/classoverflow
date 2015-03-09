@@ -82,11 +82,11 @@ td {
 
 .requests_td {
   text-align: center;
-  width: 100px;
+  //width: 100px;
 }
 
 .errorID_td {
-  width: 150px;
+  //width: 150px;
   text-align: center;
 }
 
@@ -160,4 +160,7 @@ header .hide-completed {
   color: gray;
 }
 
-.error_th { background-color: lightyellow; }
+.error_th { 
+  background-color: lightyellow; 
+}
+

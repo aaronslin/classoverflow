@@ -17,6 +17,9 @@ if (Meteor.isClient) {
   Template.body.helpers({
     errors: function () {
       return Errors.find({}, {sort: {errorCoord0: 1, errorCoord1: 1, errorCoord2:1}});
+    },
+    columnWidth: function () {
+      return [100,150,150,150,200];
     }
   });
 
