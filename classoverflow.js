@@ -3,6 +3,7 @@ Errors = new Mongo.Collection("errors");
   // errorID, createdAt
 Hints = new Mongo.Collection("hints");
   // errorID, createdAt, hintMsg, upvotes
+var scrollLocationPrevious = "#inputErrorCoords"
 
 /*$.fn.scrollView = function () {
   return this.each(function(){
@@ -12,9 +13,13 @@ Hints = new Mongo.Collection("hints");
   });
 }*/
 
-function autoScrollTo(element) {
-    var top = $("#" + element).offset().top;
-    $("html, body").animate({ scrollTop: top }, 1000);
+function scrollAndHighlight(scrollLocation) {
+      $(scrollLocationPrevious).removeAttr("style");
+      $(scrollLocation).css("background-color","lightyellow");
+      scrollLocationPrevious = scrollLocation;
+      $('html, body').animate({
+                scrollTop: $(scrollLocation).offset().top
+                }, 1000);
 }
 
 if (Meteor.isClient) {
@@ -58,11 +63,9 @@ if (Meteor.isClient) {
       var query = Errors.findOne({"errorCoord0": query0, 
                               "errorCoord1": parseInt(query1), 
                               "errorCoord2": parseInt(query2)});
-      console.log('query',query);
       //var query_count = query.count();
       //console.log(query_count);
       // QUESTION: What's a work-around .findOne?
-      var scrollLocation = '';
       if (!query) {
         Errors.insert({
           //errorID: query,
@@ -72,21 +75,15 @@ if (Meteor.isClient) {
           createdAt: new Date(),
           hints: new Array(),
           numRequests: 1
-        }, function(err,doc){
-          scrollLocation = doc;
+        }, function(err,object){
+          scrollAndHighlight("#errorID-"+object);
         });
-
         console.log('Added to database successfully.');
       }
       else {
-        scrollLocation = "#errorID-"+query._id;
+        scrollAndHighlight("#errorID-"+query._id);
         console.log('Error coordinates found.');
       };
-
-      // Scrolling
-      $('html, body').animate({
-                scrollTop: $(scrollLocation).offset().top
-                }, 1000);
 
       event.target.errorCoord0.value = ""; // Clear form
       event.target.errorCoord1.value = ""; 

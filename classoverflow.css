@@ -28,7 +28,7 @@ header {
   background: #d2edf4;
   /*background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);*/
   padding: 20px 15px 15px 15px;
-  position: relative;
+  //position: fixed;
 }
 
 footer {
@@ -67,7 +67,7 @@ form {
 .new-entry input {
   box-sizing: border-box;
   padding: 10px 0;
-  background: transparent;
+  background: white;
   border: 1px solid #DEDEDE;
   width: 95%;
   padding-left: 10px;
@@ -81,7 +81,6 @@ form {
 ul {
   margin: 0;
   padding: 0;
-  background: white;
 }
 
 td {
