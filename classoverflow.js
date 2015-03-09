@@ -12,6 +12,11 @@ Hints = new Mongo.Collection("hints");
   });
 }*/
 
+function autoScrollTo(element) {
+    var top = $("#" + element).offset().top;
+    $("html, body").animate({ scrollTop: top }, 1000);
+}
+
 if (Meteor.isClient) {
   // This code only runs on the client
   Template.body.helpers({
@@ -47,13 +52,18 @@ if (Meteor.isClient) {
     "submit .new-error-entry": function (event) {
       // This function is called when the search for ID/submit new ID blank is submitted
       //event.preventDefault();
-      console.log('error submitted',event.target)
       var query0 = event.target.errorCoord0.value;
       var query1 = event.target.errorCoord1.value;
       var query2 = event.target.errorCoord2.value;
-      var query_count = Errors.find({"errorCoord0": query0, "errorCoord1": query1, "errorCoord2": query2}).count();
-      console.log(query_count)
-      if (query_count==0) {
+      var query = Errors.findOne({"errorCoord0": query0, 
+                              "errorCoord1": parseInt(query1), 
+                              "errorCoord2": parseInt(query2)});
+      console.log('query',query);
+      //var query_count = query.count();
+      //console.log(query_count);
+      // QUESTION: What's a work-around .findOne?
+      var scrollLocation = '';
+      if (!query) {
         Errors.insert({
           //errorID: query,
           errorCoord0 : query0,
@@ -62,20 +72,26 @@ if (Meteor.isClient) {
           createdAt: new Date(),
           hints: new Array(),
           numRequests: 1
+        }, function(err,doc){
+          scrollLocation = doc;
         });
 
-        console.log('We\'ve added this to our database and displayed it.');
+        console.log('Added to database successfully.');
       }
       else {
-        // todo: navigate
-        //console.log($())
-        //$('#errorID-'+query).scrollView();
-        console.log('Its here on this (sorted) page!');
+        scrollLocation = "#errorID-"+query._id;
+        console.log('Error coordinates found.');
       };
 
+      // Scrolling
+      $('html, body').animate({
+                scrollTop: $(scrollLocation).offset().top
+                }, 1000);
+
       event.target.errorCoord0.value = ""; // Clear form
-      event.target.errorCoord1.value = ""; // Clear form
-      event.target.errorCoord2.value = ""; // Clear form
+      event.target.errorCoord1.value = ""; 
+      event.target.errorCoord2.value = ""; 
+      document.activeElement.blur();
       return false;                 // Prevent default form submit
     },
     "submit .new-hint-entry": function(event) {
@@ -92,7 +108,6 @@ if (Meteor.isClient) {
           hintID = object; // the _id of the hint
           Errors.update(errordbkey, {$push: {hints: {hintID: hintID}}});
       });
-
 
       //Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
 

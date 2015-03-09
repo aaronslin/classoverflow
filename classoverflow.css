@@ -31,6 +31,14 @@ header {
   position: relative;
 }
 
+footer {
+  background: #315481; /* Color of body background-color */
+  color: #DDDDDD;
+  height: 100px;
+  padding: 15px;
+  margin-top: 50px;
+}
+
 table {
   margin-top: 10px;
   margin-left: auto;
@@ -60,9 +68,9 @@ form {
   box-sizing: border-box;
   padding: 10px 0;
   background: transparent;
-  border: none;
-  width: 100%;
-  padding-right: 80px;
+  border: 1px solid #DEDEDE;
+  width: 95%;
+  padding-left: 10px;
   font-size: 1em;
 }
 
@@ -113,7 +121,6 @@ li {
   position: relative;
   list-style: none;
   padding: 15px;
-  border-bottom: #eee solid 1px;
 }
 
 li .text {
