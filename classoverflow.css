@@ -17,18 +17,28 @@ body {
   font-size: 14px;
 }
 
-.container {
-  max-width: 1200px;
+.myContainer {
+  width: 1200px;
   margin: 0 auto;
   min-height: 100%;
   background: white;
+}
+
+#header_container {
+  top: 0px;
+  position: fixed;
+  width: inherit;
+  z-index: 999;
+  min-width: 100px;
 }
 
 header {
   background: #d2edf4;
   /*background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);*/
   padding: 20px 15px 15px 15px;
+  //width: 100%;
   //position: fixed;
+  //z-index: 10;
 }
 
 footer {
@@ -43,7 +53,6 @@ table {
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid black;
 }
 
 #login-buttons {
@@ -87,14 +96,18 @@ td {
   vertical-align: text-top;
 }
 
+th {
+  text-align: center;
+}
+
 .requests_td {
   text-align: center;
   //width: 100px;
 }
 
 .errorID_td {
-  //width: 150px;
-  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .delete {
@@ -106,7 +119,7 @@ td {
   position: relative;
 }
 
-.upvote, .addRequest {
+.upvote, {
   float: right;
   font-weight: bold;
   background: none;
@@ -166,7 +179,26 @@ header .hide-completed {
   color: gray;
 }
 
-.error_th { 
-  background-color: lightyellow; 
+#errorHintTable {
+  margin-top: 120px;
 }
 
+#errorHintTable_container {
+  padding-top: 20px;
+}
+
+.left-align {
+  text-align: left;
+}
+
+.right-align {
+  text-align: right;
+}
+
+.count {
+  border-left: 1px solid #DDD;
+}
+
+.hintTextbox {
+  resize: both;
+}

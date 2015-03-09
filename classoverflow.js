@@ -140,4 +140,5 @@ if (Meteor.isClient) {
         Errors.update({"_id":this._id},{$inc: {numRequests:1}})
     }
   });
+  autosize($(".hintTextbox"));
 }

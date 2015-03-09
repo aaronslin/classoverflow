@@ -5,43 +5,41 @@
 </head>
 
 <body>
-  <div class="container">
-  	<header>
-  	  <h1>Dear Beta: An Advice Column for 6.004</h1>
+  <div class="myContainer">
+    <div id="header_container">
+    	<header>
+    	  <h1>Dear Beta: An Advice Column for 6.004</h1>
 
-      <form class="new-error-entry new-entry">
-      <table>
-        {{> column_width}}    
-        <tr id="inputErrorCoords">
-          <td></td>
-          <td><input type="text" placeholder="CheckoffFile" name="errorCoord0" /></td>
-          <td><input type="text" placeholder="Nodes" name="errorCoord1"/></td>
-          <td><input type="text" placeholder="Time" name="errorCoord2" /></td>
-          <td><button id="findorrequestbtn">Find or Request Advice</button></td>
-          <td></td>
-        </tr>
-      </table>
-      </form>
-  	</header>
-
-
-    <br>
-    <br>
-    <br>
-
-  	<table id="errorHintTable">
-      {{> column_width}}
-      <thead>
-  			<th>Requests</th>
-  			<th class="error_th">Checkoff File</th>
-        <th class="error_th">Nodes</th>
-        <th class="error_th">Time</th>
-  			<th>Hint</th>
-  		</thead>
-      {{#each errors}}
-        {{> error_entry}}
-      {{/each}}
-  	</table>
+        <form class="new-error-entry new-entry">
+        <table>
+          {{> column_width}}    
+          <tr id="inputErrorCoords">
+            <td></td>
+            <td><input type="text" placeholder="CheckoffFile" name="errorCoord0" /></td>
+            <td><input type="text" placeholder="Nodes" name="errorCoord1"/></td>
+            <td><input type="text" placeholder="Time" name="errorCoord2" /></td>
+            <td><button id="findorrequestbtn">Find or Request Advice</button></td>
+            <td></td>
+          </tr>
+        </table>
+        </form>
+    	</header>
+    </div>
+    <div id="errorHintTable_container">
+    	<table id="errorHintTable">
+        {{> column_width}}
+        <thead>
+    			<th>Requests</th>
+    			<th class="error_th">Checkoff File</th>
+          <th class="error_th">Nodes</th>
+          <th class="error_th">Time</th>
+    			<th>Hint</th>
+    		</thead>
+        {{#each errors}}
+          {{> error_entry}}
+        {{/each}}
+    	</table>
+    </div>
     <footer>
       <!-- Nothing -->
     </footer>
@@ -51,30 +49,23 @@
 <template name="error_entry">
   <tr id="errorID-{{_id}}">
   	<td class="requests_td">
-		  {{numRequests}}
-      <button class="addRequest">&plus;1</button>
+      <button type="button" class="btn btn-primary addRequest">
+        Want Hints <span class="count">{{numRequests}}</span>
+      </button>
     </td>
-   	<td class="errorID_td">
-   		<!--class="{{#if checked}}checked{{/if}}"-->
-	    <!--button class="delete">&times;</button-->
+   	<td class="errorID_td left-align">
 	    <span class="text">{{errorCoord0}}</span>
     </td>
-    <td class="errorID_td">
-      <!--class="{{#if checked}}checked{{/if}}"-->
-      <!--button class="delete">&times;</button-->
+    <td class="errorID_td right-align">
       <span class="text">{{errorCoord1}}</span>
     </td>
-    <td class="errorID_td">
-      <!--class="{{#if checked}}checked{{/if}}"-->
-      <!--button class="delete">&times;</button-->
+    <td class="errorID_td right-align">
       <span class="text">{{errorCoord2}}</span>
     </td>
-    <!--td></td>
-    <td></td-->
   	<td class="hints_td">
   		<ul>
     		<li><form class="new-hint-entry new-entry">
-	  	    <input type="text" name="text" placeholder="Hint" />
+	  	    <input type="text" class="hintTextbox" name="text" placeholder="Hint" />
 	  	 	</form></li>
   			{{#each hintIDs}}
   				{{#each sortedHints}}
@@ -92,16 +83,17 @@
 <template name="hint_entry">
 	<!--li><span class='upvotebadge'>{{upvotes}} upvotes</span> {{hintMsg}}<button class="upvote">&plus;1</button></li-->
   <li>
-  	<!--{{#each getHintInfo hintID}}-->
-  		<span class="upvotes">{{upvotes}} upvotes</span> | {{hintMsg}}
-  	<button class="upvote">&plus;1</button>
+		<button type="button" class="btn btn-info upvote">
+      Upvote <span class="count">{{upvotes}}</span>
+    </button>
+    {{hintMsg}}
   	<button class="delete delete_hint">&times;</button>
   </li>
 </template>
 
 <template name="column_width">
   <colgroup>
-   <col span="1" style="width: 100px;">
+   <col span="1" style="width: 150px;">
    <col span="1" style="width: 150px;">
    <col span="1" style="width: 150px;">
    <col span="1" style="width: 150px;">
