@@ -64,6 +64,15 @@ if (Meteor.isClient) {
       var query0 = event.target.errorCoord0.value;
       var query1 = event.target.errorCoord1.value;
       var query2 = event.target.errorCoord2.value;
+
+      if (!query0 || !query1 || !query2) {
+        return false;
+      }
+      else if (!parseInt(query1) || !parseInt(query2)) {
+        $("#errorMessage").html("The coordinates 'nodes' and 'time' must be integers.");
+        $("#errorMessage").css("display","block").delay(2500).fadeOut(2000, "linear");
+        return false;
+      }
       var query = Errors.findOne({"errorCoord0": query0, 
                               "errorCoord1": parseInt(query1), 
                               "errorCoord2": parseInt(query2)});
@@ -100,6 +109,11 @@ if (Meteor.isClient) {
       var errordbkey = this._id;
       var hintObject = $("#errorID-"+errordbkey).find('.hintTextarea')[0];
       var hint = hintObject.value;
+      if ( $.trim( hint ) == '' ) {
+        hintObject.value="";
+        return false;
+      }
+
       Hints.insert({
         parent: errordbkey,
         hintMsg: hint,
