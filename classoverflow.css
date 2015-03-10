@@ -17,8 +17,8 @@ body {
   font-size: 14px;
 }
 
-.myContainer {
-  width: 1200px;
+#myContainer {
+  max-width: 1000px;
   margin: 0 auto;
   min-height: 100%;
   background: white;
@@ -27,7 +27,7 @@ body {
 #header_container {
   top: 0px;
   position: fixed;
-  width: inherit;
+  //width: inherit;
   z-index: 999;
   min-width: 100px;
 }
@@ -35,7 +35,9 @@ body {
 header {
   background: #d2edf4;
   /*background-image: linear-gradient(to bottom, #d0edf5, #e1e5f0 100%);*/
-  padding: 20px 15px 15px 15px;
+  padding: 0px;
+  padding-top: 20px;
+  padding-bottom: 15px;
   //width: 100%;
   //position: fixed;
   //z-index: 10;
@@ -53,6 +55,9 @@ table {
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
+  padding-right: 20px;
+  padding-left: 20px;
+  //border: 1px solid black;
 }
 
 #login-buttons {
@@ -60,11 +65,19 @@ table {
 }
 
 h1 {
-  font-size: 1.5em;
+  font-size: 1.7em;
   margin: 0;
   margin-bottom: 10px;
+  margin-top: 30px;
   display: inline-block;
   margin-right: 1em;
+  margin-left: 40px;
+  font-family: "Palatino";
+  font-weight: bold;
+}
+
+#findorrequestbtn {
+  margin-left: 8px;
 }
 
 form {
@@ -73,17 +86,19 @@ form {
   position: relative;
 }
 
-.new-entry input {
+.new-entry input,
+.new-entry textarea {
   box-sizing: border-box;
   padding: 10px 0;
   background: white;
   border: 1px solid #DEDEDE;
-  width: 95%;
+  width: 99%;
   padding-left: 10px;
   font-size: 1em;
 }
 
-.new-entry input:focus{
+.new-entry textarea:focus,
+.new-entry input:focus {
   outline: 0;
 }
 
@@ -98,16 +113,19 @@ td {
 
 th {
   text-align: center;
+  font-size: 1em;
 }
 
 .requests_td {
   text-align: center;
-  //width: 100px;
+  padding-top: 23px;
 }
 
 .errorID_td {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 30px;
+  vertical-align: middle;
 }
 
 .delete {
@@ -132,7 +150,7 @@ th {
 li {
   position: relative;
   list-style: none;
-  padding: 15px;
+  padding: 8px;
 }
 
 li .text {
@@ -170,6 +188,7 @@ header .hide-completed {
     clear: both;
   }
 
+  .new-entry textarea,
   .new-entry input {
     padding-bottom: 5px;
   }
@@ -180,11 +199,15 @@ header .hide-completed {
 }
 
 #errorHintTable {
-  margin-top: 120px;
+  margin-top: 150px;
 }
 
 #errorHintTable_container {
   padding-top: 20px;
+}
+
+.firstErrorRow td {
+  vertical-align: top;
 }
 
 .left-align {
@@ -235,3 +258,22 @@ header .hide-completed {
   vertical-align: top;
 }
 
+.addHint {
+  display: none;
+}
+
+.addHint_td {
+  padding-top: 23px;
+  padding-left: 0px;
+  margin-left: 0px;
+  float: left;
+}
+
+textarea {
+  resize: none;
+}
+
+.error_th {
+  text-align: left;
+  padding-left: 10px;
+}

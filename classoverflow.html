@@ -5,7 +5,7 @@
 </head>
 
 <body>
-  <div class="myContainer">
+  <div id="myContainer">
     <div id="header_container">
     	<header>
     	  <h1>Dear Beta: An Advice Column for 6.004</h1>
@@ -18,7 +18,11 @@
             <td><input type="text" placeholder="CheckoffFile" name="errorCoord0" /></td>
             <td><input type="text" placeholder="Nodes" name="errorCoord1"/></td>
             <td><input type="text" placeholder="Time" name="errorCoord2" /></td>
-            <td><button id="findorrequestbtn">Find or Request Advice</button></td>
+            <td>
+              <button id="findorrequestbtn" class="btn btn-danger">
+                Find or Register Error
+              </button>
+            </td>
             <td></td>
           </tr>
         </table>
@@ -34,6 +38,7 @@
           <th class="error_th">Nodes</th>
           <th class="error_th">Time</th>
     			<th>Hint</th>
+          <th></th>
     		</thead>
         {{#each errors}}
           {{> error_entry}}
@@ -47,10 +52,10 @@
 </body>
 
 <template name="error_entry">
-  <tr id="errorID-{{_id}}">
+  <tr id="errorID-{{_id}}" class="firstErrorRow">
   	<td class="requests_td">
       <button type="button" class="btn btn-primary addRequest">
-        Want Hints <span class="count">{{numRequests}}</span>
+        Follow <span class="count">{{numRequests}}</span>
       </button>
     </td>
    	<td class="errorID_td left-align">
@@ -66,7 +71,7 @@
   		<ul>
     		<li>
           <form class="new-hint-entry new-entry">
-	  	      <input type="text" class="hintTextbox" name="text" placeholder="Add a hint!" />
+	  	      <textarea class="hintTextarea" rows="1" placeholder="Add a hint!"></textarea>
 	  	 	  </form>
        </li>
   			{{#each hintIDs}}
@@ -76,14 +81,16 @@
   			{{/each}}
   		</ul>
   	</td>
-  	<td>
-  		<button class="delete delete_error">&times;</button>
+  	<td class="addHint_td">
+  		<!--button class="delete delete_error">&times;</button-->
+      <button type="button" class="btn btn-danger addHint">
+        Submit
+      </button>
   	</td>
   </tr>
 </template>
 
 <template name="hint_entry">
-	<!--li><span class='upvotebadge'>{{upvotes}} upvotes</span> {{hintMsg}}<button class="upvote">&plus;1</button></li-->
   <li>
     <div class="hintRow">
   		<span class="upvote_btn">
@@ -95,8 +102,7 @@
         {{upvotes}}
       </span>
       <span class="hintMsg_subcolumn">
-        {{hintMsg}}
-    	  <button class="delete delete_hint">&times;</button>
+        {{{lineBrokenHints hintMsg}}}
       </span>
     </div>
   </li>
@@ -104,11 +110,11 @@
 
 <template name="column_width">
   <colgroup>
+   <col span="1" style="width: 120px;">
    <col span="1" style="width: 150px;">
-   <col span="1" style="width: 150px;">
-   <col span="1" style="width: 150px;">
-   <col span="1" style="width: 150px;">
-   <col span="1" style="width: 350px;">
-   <col span="1" style="width: 30px;">
+   <col span="1" style="width: 100px;">
+   <col span="1" style="width: 100px;">
+   <col span="1" style="width: 450px;">
+   <col span="1" style="width: 80px;">
   </colgroup>
 </template>

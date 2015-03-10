@@ -5,21 +5,13 @@ Hints = new Mongo.Collection("hints");
   // errorID, createdAt, hintMsg, upvotes
 var scrollLocationPrevious = "#inputErrorCoords"
 
-/*$.fn.scrollView = function () {
-  return this.each(function(){
-    $('html, body').animate({
-      scrollTop:$(this).offset().top
-    },1000);
-  });
-}*/
-
 function scrollAndHighlight(scrollLocation) {
-      $(scrollLocationPrevious).removeAttr("style");
-      $(scrollLocation).css("background-color","lightyellow");
-      scrollLocationPrevious = scrollLocation;
-      $('html, body').animate({
-                scrollTop: $(scrollLocation).offset().top
-                }, 1000);
+  $(scrollLocationPrevious).removeAttr("style");
+  $(scrollLocation).css("background-color","lightyellow");
+  scrollLocationPrevious = scrollLocation;
+  $('html, body').animate({
+    scrollTop: $(scrollLocation).offset().top-130
+    }, 1000);
 }
 
 if (Meteor.isClient) {
@@ -27,9 +19,22 @@ if (Meteor.isClient) {
   Template.body.helpers({
     errors: function () {
       return Errors.find({}, {sort: {errorCoord0: 1, errorCoord1: 1, errorCoord2:1}});
+    }
+  });
+
+  Template.body.events({
+    "focus .hintTextarea": function(event) {
+      submitObj = $("#errorID-"+this._id).find(".addHint");
+      submitObj.fadeIn();
+      var element = event.target;
+      $(element).animate({height: "200px"}, 200);
     },
-    columnWidth: function () {
-      return [100,150,150,150,200];
+    "blur .hintTextarea": function(event) {
+      var element = event.target;
+      $(element).stop().animate({height: "40px"}, 200);
+      submitObj = $("#errorID-"+this._id).find(".addHint");
+      //submitObj.css("display", "none");
+      submitObj.fadeOut();
     }
   });
 
@@ -37,7 +42,7 @@ if (Meteor.isClient) {
     hintIDs: function () {
       return Errors.find({"_id": this._id}); 
     },
-    sortedHints: function() {
+    sortedHints: function () {
       var hintIDList = this.hints.map(function(hintIDObject) {
         return hintIDObject.hintID;
       });
@@ -45,13 +50,12 @@ if (Meteor.isClient) {
     }
   });
 
-  // BEGIN EXTINCT
   Template.hint_entry.helpers({
-    getHintInfo: function(hint) {
-      return Hints.find({"_id": hint});
+    lineBrokenHints: function (hint) {
+      var newHint = hint.split('\n').join('<br \>');
+      return newHint;
     }
   });
-  // END EXTINCT
 
   Template.body.events({
     "submit .new-error-entry": function (event) {
@@ -91,24 +95,24 @@ if (Meteor.isClient) {
       document.activeElement.blur();
       return false;                 // Prevent default form submit
     },
-    "submit .new-hint-entry": function(event) {
-      var hint = event.target.text.value;
-      //console.log(event);
+    "click .addHint": function(event) {
+      //var hint = event.target.text.value;
       var errordbkey = this._id;
-      var hintID;
-        Hints.insert({
-          parent: errordbkey,
-          hintMsg: hint,
-          upvotes: 0
-        },
-        function (err, object) {
-          hintID = object; // the _id of the hint
-          Errors.update(errordbkey, {$push: {hints: {hintID: hintID}}});
+      var hintObject = $("#errorID-"+errordbkey).find('.hintTextarea')[0];
+      var hint = hintObject.value;
+      Hints.insert({
+        parent: errordbkey,
+        hintMsg: hint,
+        upvotes: 0
+      },
+      function (err, object) {
+        var hintID = object; // the _id of the hint
+        Errors.update(errordbkey, {$push: {hints: {hintID: hintID}}});
       });
 
       //Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
 
-      event.target.text.value = "";
+      hintObject.value = "";
       return false;
     }
   });
@@ -140,5 +144,4 @@ if (Meteor.isClient) {
         Errors.update({"_id":this._id},{$inc: {numRequests:1}})
     }
   });
-  autosize($(".hintTextbox"));
 }
