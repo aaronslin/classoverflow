@@ -64,9 +64,11 @@
     </td>
   	<td class="hints_td">
   		<ul>
-    		<li><form class="new-hint-entry new-entry">
-	  	    <input type="text" class="hintTextbox" name="text" placeholder="Hint" />
-	  	 	</form></li>
+    		<li>
+          <form class="new-hint-entry new-entry">
+	  	      <input type="text" class="hintTextbox" name="text" placeholder="Add a hint!" />
+	  	 	  </form>
+       </li>
   			{{#each hintIDs}}
   				{{#each sortedHints}}
   					{{> hint_entry}}
@@ -83,11 +85,20 @@
 <template name="hint_entry">
 	<!--li><span class='upvotebadge'>{{upvotes}} upvotes</span> {{hintMsg}}<button class="upvote">&plus;1</button></li-->
   <li>
-		<button type="button" class="btn btn-info upvote">
-      Upvote <span class="count">{{upvotes}}</span>
-    </button>
-    {{hintMsg}}
-  	<button class="delete delete_hint">&times;</button>
+    <div class="hintRow">
+  		<span class="upvote_btn">
+        <button type="button" class="btn btn-info upvote">
+          Upvote
+        </button> 
+      </span>
+      <span class="upvote_count">
+        {{upvotes}}
+      </span>
+      <span class="hintMsg_subcolumn">
+        {{hintMsg}}
+    	  <button class="delete delete_hint">&times;</button>
+      </span>
+    </div>
   </li>
 </template>
 

@@ -197,8 +197,41 @@ header .hide-completed {
 
 .count {
   border-left: 1px solid #DDD;
+  margin-left: 9px;
+  padding-left: 13px;
 }
 
 .hintTextbox {
   resize: both;
 }
+
+.hintRow {
+  display: table-row;
+}
+
+.upvote_btn {
+  float: left; 
+  width: 90px;
+  display: table-cell;
+}
+
+.upvote_count {
+  width: 20px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  display: table-cell;
+  padding-top: 6px;
+}
+
+.hintMsg_subcolumn {
+  padding-left: 10px;
+  padding-top: 6px;
+  font-size: 14px;
+  display: table-cell;
+}
+
+.hintRow>span {
+  vertical-align: top;
+}
+
