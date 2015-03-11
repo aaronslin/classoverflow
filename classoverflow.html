@@ -23,8 +23,10 @@
                 Find or Register Error
               </button>
             </td>
-            <td id="loginInfo" style="word-wrap: overflow">
-              Not logged in.
+            <td id="loginInfo_td">
+              <div id="loginInfo">
+                
+              </div>
             </td>
           </tr>
         </table>
@@ -35,11 +37,6 @@
       </div>
     </div>
     <div id="errorHintTable_container">
-
-      <div style="margin-left: 100px; margin-top: 135px; margin-bottom: 0px; width: 400px">
-
-      </div>
-
     	<table id="errorHintTable">
         {{> column_width}}
         <thead>
@@ -137,7 +134,7 @@
         <div class="modal-body">
           <h4 class="modal-title" id="myModalLabel">Enter your Kerberos</h4>
           <form class="new-entry" id="nickname">
-            <input type="text" placeholder="Your Kerberos" name="username" />
+            <input type="text" placeholder=":)" name="username" />
           </form>
         </div>
       </div><!-- /.modal-content -->

@@ -16,18 +16,9 @@ function scrollAndHighlight(scrollLocation) {
 }
 
 if (Meteor.isClient) {
-  // Runs once meteor loads
-
-  // TEMPORARY!
-  
-  //
-  // Template.body.rendered = function () {
-  //   $("#openModal").modal("show");
-  //   console.log("rendered");
-  // };
   Meteor.startup(function () {
-    Session.set("currentUsername","aaronlin");
-    $('#openModal').modal('show');  });
+    Session.set("currentUsername","defaultUser");
+  });
 
   // Template helpers
   Template.body.helpers({
@@ -174,7 +165,7 @@ if (Meteor.isClient) {
     },
     "submit #nickname": function(event) {
       username = event.target.username.value.toLowerCase();
-      $("#loginInfo").html(username);
+      //$("#loginInfo").html("Logged in as: "+username);
 
       // Find in database
       var query = Users.findOne({"username":username});
@@ -186,12 +177,8 @@ if (Meteor.isClient) {
           followed: new Array(),
           createdAt: new Date()
         });
-        console.log("User inserted into database:",username);
       }
-      else {
-        // Load all information (nothing?)
-        console.log("User already in database!");
-      }
+
       Session.set("currentUsername", username);
 
       $(".in").css("display","none");

@@ -315,20 +315,29 @@ textarea {
    display:block;
 }
 
+#loginInfo_td {
+  position: absolute;
+  top: 50%;
+  margin-top: 5px;/* half of #content height*/
+  left: 0;
+  width: 100%;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+#loginInfo {
+  width: 300px;
+  position: absolute;
+  right: 0px;
+  padding: 5px;
+  padding-right: 10px;
+  margin-top: auto;
+  margin-bottom: auto;
+  height: 30px;
+  text-align: right;
+  color: #777;
+  font-style: italic;
+  font-size: 12px;
+  vertical-align: text-bottom;
+}
 
 /*.notvoted {
   background-color: #BBB;
