@@ -36,7 +36,7 @@ if (Meteor.isClient) {
     },
     "blur .hintTextarea": function(event) {
       var element = event.target;
-      $(element).stop().animate({height: "40px"}, 200);
+      $(element).stop().animate({height: "34px"}, 200);
       submitObj = $("#errorID-"+this._id).find(".addHint");
       //submitObj.css("display", "none");
       submitObj.fadeOut();
@@ -53,14 +53,14 @@ if (Meteor.isClient) {
       });
       return Hints.find({"_id": {$in: hintIDList}}, {sort: {upvotes: -1}});
     },
-    checkIfRequested: function () {
+    ifRequested: function () {
       currentUsername = Session.get("currentUsername");
       followed = Users.findOne({username: currentUsername}).followed;
       if ($.inArray(this._id, followed)!==-1) {
-        return "requested";
+        return true;
       }
       else {
-        return "notrequested";
+        return false;
       }
 
     }
@@ -71,14 +71,14 @@ if (Meteor.isClient) {
       var newHint = hint.split('\n').join('<br \>');
       return newHint;
     },
-    checkIfUpvoted: function () {
+    ifUpvoted: function () {
       currentUsername = Session.get("currentUsername");
       upvoted = Users.findOne({username: currentUsername}).upvoted;
       if ($.inArray(this._id, upvoted)!==-1) {
-        return "upvoted";
+        return true;
       }
       else {
-        return "notvoted";
+        return false;
       }
     }
   });
@@ -164,7 +164,12 @@ if (Meteor.isClient) {
       return false;
     },
     "submit #nickname": function(event) {
-      username = event.target.username.value.toLowerCase();
+      var username = event.target.username.value.toLowerCase();
+      if (/[^a-zA-Z0-9]/.test(username) || username.length > 8) {
+        $("#loginError").fadeIn();
+        event.target.username.value = '';
+        return false;
+      }
       //$("#loginInfo").html("Logged in as: "+username);
 
       // Find in database
@@ -207,6 +212,7 @@ if (Meteor.isClient) {
       currentUsername = Session.get("currentUsername");
       hintID = this._id;
       user = Users.findOne({username: currentUsername});
+      console.log(event.target);
       if($.inArray(hintID,user.upvoted)!==-1) { // if found
         Hints.update(hintID,{$inc: {upvotes: -1}});
         Users.update(user._id,{$pull: {upvoted: hintID}});
@@ -215,6 +221,7 @@ if (Meteor.isClient) {
         Hints.update(hintID,{$inc: {upvotes: 1}});
         Users.update(user._id,{$push: {upvoted: hintID}});
       }
+      event.target.blur();
     },
     "click .addRequest": function(event, template) {
       //Errors.update({"_id":this._id},{$inc: {numRequests:1}})
@@ -229,6 +236,7 @@ if (Meteor.isClient) {
         Errors.update(errorID,{$inc: {numRequests: 1}});
         Users.update(user._id,{$push: {followed: errorID}});
       }
+      event.target.blur();
     }
   });
 }

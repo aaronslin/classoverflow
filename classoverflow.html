@@ -15,7 +15,7 @@
           {{> column_width}}    
           <tr id="inputErrorCoords">
             <td></td>
-            <td><input type="text" placeholder="CheckoffFile" name="errorCoord0" /></td>
+            <td><input type="text" placeholder="Checkoff File" name="errorCoord0" /></td>
             <td><input type="text" placeholder="Nodes" name="errorCoord1"/></td>
             <td><input type="text" placeholder="Time" name="errorCoord2" /></td>
             <td>
@@ -44,7 +44,7 @@
     			<th class="error_th">Checkoff File</th>
           <th class="error_th">Nodes</th>
           <th class="error_th">Time</th>
-    			<th>Hint</th>
+    			<th>Hints</th>
           <th></th>
     		</thead>
         {{#each errors}}
@@ -61,9 +61,14 @@
 <template name="error_entry">
   <tr id="errorID-{{_id}}" class="firstErrorRow">
   	<td class="requests_td">
-      <button type="button" class="btn btn-info addRequest {{checkIfRequested}}">
-        Follow <span class="count">{{numRequests}}</span>
-      </button>
+      <span class="request_btn">
+        <button type="button" class="btn btn-default addRequest {{#if ifRequested}}requested{{else}}notrequested{{/if}}">
+          {{#if ifRequested}}Watch{{else}}Watch{{/if}}
+        </button>
+      </span>
+      <span class="request_count">
+        {{numRequests}}
+      </span>
     </td>
    	<td class="errorID_td left-align">
 	    <span class="text">{{errorCoord0}}</span>
@@ -78,7 +83,7 @@
   		<ul>
     		<li>
           <form class="new-hint-entry new-entry">
-	  	      <textarea class="hintTextarea" rows="1" placeholder="Add a hint!"></textarea>
+	  	      <textarea class="hintTextarea" rows="1" placeholder="Add a hint!" style="height: 34px"></textarea>
 	  	 	  </form>
        </li>
   			{{#each hintIDs}}
@@ -101,8 +106,8 @@
   <li>
     <div class="hintRow">
   		<span class="upvote_btn">
-        <button type="button" class="btn btn-default upvote {{checkIfUpvoted}}">
-          Upvote
+        <button type="button" class="btn btn-default upvote {{#if ifUpvoted}}upvoted{{else}}notupvoted{{/if}}">
+          {{#if ifUpvoted}}Upvote{{else}}Upvote{{/if}}
         </button> 
       </span>
       <span class="upvote_count">
@@ -133,6 +138,9 @@
       <div class="modal-content">
         <div class="modal-body">
           <h4 class="modal-title" id="myModalLabel">Enter your Kerberos</h4>
+          <div id="loginError">
+            Please enter a valid Kerberos.
+          </div>
           <form class="new-entry" id="nickname">
             <input type="text" placeholder=":)" name="username" />
           </form>
