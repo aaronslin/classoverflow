@@ -2,6 +2,7 @@
 Errors = new Mongo.Collection("errors");
 Hints = new Mongo.Collection("hints");
 Users = new Mongo.Collection("users");
+Feedback = new Mongo.Collection("feedback");
 
 var scrollLocationPrevious = "#inputErrorCoords";
 var loggedIn = 0;
@@ -188,6 +189,14 @@ if (Meteor.isClient) {
 
       $(".in").css("display","none");
       event.target.username.value = '';
+      return false;
+    },
+    "submit #feedback": function (event) {
+      Feedback.insert({
+        user: Session.get("currentUsername"), 
+        feedback: event.target.feedback.value
+      });
+      event.target.feedback.value = '';
       return false;
     }
   });

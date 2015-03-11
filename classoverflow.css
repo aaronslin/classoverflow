@@ -413,6 +413,34 @@ header .hide-completed {
   border: 1px solid #70B0C0;
   color: #ECECEC;
 }
+
+.affix {
+  bottom: 50px;
+  right: 50px;
+  width: 240px;
+  background-color: #D0EAFF;
+  border: 1px solid #6194BC;
+  height: 270px;
+  padding: 5px;
+  padding-top: 10px;
+}
+
+.affix textarea {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+h5 {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#feedbackButton {
+  float: right;
+  margin-right: 5px;
+}
+
 /*.notrequested {
   background-color: #ECE0F8;
   border: 1px solid #CCC0D8;

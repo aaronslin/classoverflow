@@ -51,6 +51,7 @@
           {{> error_entry}}
         {{/each}}
     	</table>
+      {{> feedbackBox}}
     </div>
     <footer>
       <!-- Nothing -->
@@ -149,5 +150,17 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
   <div class="modal-backdrop fade in"></div>
+</template>
+
+<template name="feedbackBox">
+  <div class="affix feedback">
+    <h5>Feedback</h5>
+    <form class="new-entry" id="feedback">
+      <textarea rows="7" placeholder="e.g. questions, bugs, compliments, criticisms, suggestions, etc." name="feedback"></textarea>
+      <button id="feedbackButton" class="btn btn-danger">
+        Submit
+      </button>
+    </form>
+  </div>
 </template>
 
