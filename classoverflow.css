@@ -28,7 +28,7 @@ body {
   top: 0px;
   position: fixed;
   //width: inherit;
-  z-index: 999;
+  z-index: 100;
   min-width: 100px;
 }
 
@@ -38,9 +38,6 @@ header {
   padding: 0px;
   padding-top: 20px;
   padding-bottom: 20px;
-  //width: 100%;
-  //position: fixed;
-  //z-index: 10;
 }
 
 footer {
@@ -289,3 +286,55 @@ textarea {
   font-size: 16px;
   display: none;
 }
+
+#userPrompt {
+  display: block;
+  top: 100px;
+  z-index: 999;
+  width: 400px;
+  height: 100px;
+  background-color: #CCC;
+  padding-left: auto;
+  padding-right: auto;
+  margin-right: auto;
+  margin-left: auto;
+  position: absolute;
+}
+
+/*.notvoted {
+  background-color: #BBB;
+  border: 1px solid #AAA;
+}
+
+.notvoted:hover,
+.notvoted:active,
+.notvoted:focus {
+  background-color: #AAA;
+  border: 1px solid #AAA;
+}*/
+
+.upvoted,
+.upvoted:hover,
+.upvoted:active,
+.upvoted:focus {
+  background-color: #FAAC58;
+  border: 1px solid #DA8C38;
+}
+
+.requested,
+.requested:hover,
+.requested:active,
+.requested:focus {
+  background-color: #CC6699;
+  border: 1px solid #AA4477;
+}
+/*.notrequested {
+  background-color: #ECE0F8;
+  border: 1px solid #CCC0D8;
+}
+*/
+/*.upvoted:hover,
+.upvoted:active,
+.upvoted:focus {
+  background-color: #BB5588;
+}*/
