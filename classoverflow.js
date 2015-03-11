@@ -19,10 +19,15 @@ if (Meteor.isClient) {
   // Runs once meteor loads
 
   // TEMPORARY!
-  Session.set("currentUsername","aaronlin");
+  
   //
-
-
+  // Template.body.rendered = function () {
+  //   $("#openModal").modal("show");
+  //   console.log("rendered");
+  // };
+  Meteor.startup(function () {
+    Session.set("currentUsername","aaronlin");
+    $('#openModal').modal('show');  });
 
   // Template helpers
   Template.body.helpers({
@@ -189,6 +194,7 @@ if (Meteor.isClient) {
       }
       Session.set("currentUsername", username);
 
+      $(".in").css("display","none");
       event.target.username.value = '';
       return false;
     }

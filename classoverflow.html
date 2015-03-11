@@ -5,6 +5,7 @@
 </head>
 
 <body>
+  {{> loginModal}}
   <div id="myContainer">
     <div id="header_container">
     	<header>
@@ -36,9 +37,7 @@
     <div id="errorHintTable_container">
 
       <div style="margin-left: 100px; margin-top: 135px; margin-bottom: 0px; width: 400px">
-        <form class="new-entry" id="nickname">
-          <input type="text" placeholder="Kerberos" name="username" />
-        </form>
+
       </div>
 
     	<table id="errorHintTable">
@@ -131,24 +130,19 @@
 </template>
 
 
-
-<template name="myModal">
-  <div id="myModal" class="modal fade">
+<template name="loginModal">
+  <div class="modal in" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Confirmation</h4>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to save changes you made to document before closing?</p>
-                <p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-body">
+          <h4 class="modal-title" id="myModalLabel">Enter your Kerberos</h4>
+          <form class="new-entry" id="nickname">
+            <input type="text" placeholder="Your Kerberos" name="username" />
+          </form>
         </div>
-    </div>
-  </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  <div class="modal-backdrop fade in"></div>
 </template>
+

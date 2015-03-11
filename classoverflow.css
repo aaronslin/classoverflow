@@ -301,6 +301,35 @@ textarea {
   position: absolute;
 }
 
+.modal-dialog {
+  margin: auto;
+  top: 250px;
+}
+
+.modal-backdrop.in {
+  background-color: white;
+  opacity: 0.8;
+}
+
+.modal.in {
+   display:block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*.notvoted {
   background-color: #BBB;
   border: 1px solid #AAA;
