@@ -86,6 +86,7 @@ form {
   position: relative;
 }
 
+.new-entry select,
 .new-entry input,
 .new-entry textarea {
   box-sizing: border-box;
@@ -95,6 +96,7 @@ form {
   width: 99%;
   padding-left: 10px;
   font-size: 1em;
+  height: 40px;
 }
 
 .new-entry textarea:focus,
@@ -233,7 +235,7 @@ header .hide-completed {
 }
 
 .upvote_btn {
-  float: left; 
+  float: left;
   width: 90px;
   display: table-cell;
 }
@@ -258,9 +260,9 @@ header .hide-completed {
   vertical-align: top;
 }
 
-.addHint {
+/*.addHint {
   display: none;
-}
+}*/
 
 .addHint_td {
   padding-top: 23px;
