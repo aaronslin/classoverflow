@@ -1,9 +1,10 @@
 // classoverflow.js
 Errors = new Mongo.Collection("errors");
-  // errorID, createdAt
 Hints = new Mongo.Collection("hints");
-  // errorID, createdAt, hintMsg, upvotes
-var scrollLocationPrevious = "#inputErrorCoords"
+Users = new Mongo.Collection("users");
+
+var scrollLocationPrevious = "#inputErrorCoords";
+var loggedIn = 0;
 
 function scrollAndHighlight(scrollLocation) {
   $(scrollLocationPrevious).removeAttr("style");
@@ -15,7 +16,15 @@ function scrollAndHighlight(scrollLocation) {
 }
 
 if (Meteor.isClient) {
-  // This code only runs on the client
+  // Runs once meteor loads
+
+  // TEMPORARY!
+  Session.set("currentUsername","aaronlin");
+  //
+
+
+
+  // Template helpers
   Template.body.helpers({
     errors: function () {
       return Errors.find({}, {sort: {errorCoord0: 1, errorCoord1: 1, errorCoord2:1}});
@@ -44,9 +53,20 @@ if (Meteor.isClient) {
     },
     sortedHints: function () {
       var hintIDList = this.hints.map(function(hintIDObject) {
-        return hintIDObject.hintID;
+        return hintIDObject;
       });
       return Hints.find({"_id": {$in: hintIDList}}, {sort: {upvotes: -1}});
+    },
+    checkIfRequested: function () {
+      currentUsername = Session.get("currentUsername");
+      followed = Users.findOne({username: currentUsername}).followed;
+      if ($.inArray(this._id, followed)!==-1) {
+        return "requested";
+      }
+      else {
+        return "notrequested";
+      }
+
     }
   });
 
@@ -54,6 +74,16 @@ if (Meteor.isClient) {
     lineBrokenHints: function (hint) {
       var newHint = hint.split('\n').join('<br \>');
       return newHint;
+    },
+    checkIfUpvoted: function () {
+      currentUsername = Session.get("currentUsername");
+      upvoted = Users.findOne({username: currentUsername}).upvoted;
+      if ($.inArray(this._id, upvoted)!==-1) {
+        return "upvoted";
+      }
+      else {
+        return "notvoted";
+      }
     }
   });
 
@@ -80,6 +110,9 @@ if (Meteor.isClient) {
       //console.log(query_count);
       // QUESTION: What's a work-around .findOne?
       if (!query) {
+        currentUsername = Session.get("currentUsername");
+        userID = Users.findOne({username: currentUsername})._id;
+
         Errors.insert({
           //errorID: query,
           errorCoord0 : query0,
@@ -90,12 +123,13 @@ if (Meteor.isClient) {
           numRequests: 1
         }, function(err,object){
           scrollAndHighlight("#errorID-"+object);
+          Users.update(userID, {$push: {followed: object}});
         });
-        console.log('Added to database successfully.');
+        //console.log('Added to database successfully.');
       }
       else {
         scrollAndHighlight("#errorID-"+query._id);
-        console.log('Error coordinates found.');
+        //console.log('Error coordinates found.');
       };
 
       event.target.errorCoord0.value = ""; // Clear form
@@ -109,7 +143,7 @@ if (Meteor.isClient) {
       var errordbkey = this._id;
       var hintObject = $("#errorID-"+errordbkey).find('.hintTextarea')[0];
       var hint = hintObject.value;
-      if ( $.trim( hint ) == '' ) {
+      if ( $.trim( hint ) == '' ) { // Check that it's not all whitespace
         hintObject.value="";
         return false;
       }
@@ -121,12 +155,40 @@ if (Meteor.isClient) {
       },
       function (err, object) {
         var hintID = object; // the _id of the hint
-        Errors.update(errordbkey, {$push: {hints: {hintID: hintID}}});
+
+        // Old version:
+        //Errors.update(errordbkey, {$push: {hints: {hintID: hintID}}});
+        Errors.update(errordbkey, {$push: {hints: hintID}});
       });
 
       //Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
 
       hintObject.value = "";
+      return false;
+    },
+    "submit #nickname": function(event) {
+      username = event.target.username.value.toLowerCase();
+      $("#loginInfo").html(username);
+
+      // Find in database
+      var query = Users.findOne({"username":username});
+      if (!query) {
+        // User not found
+        Users.insert({
+          username: username,
+          upvoted: new Array(),
+          followed: new Array(),
+          createdAt: new Date()
+        });
+        console.log("User inserted into database:",username);
+      }
+      else {
+        // Load all information (nothing?)
+        console.log("User already in database!");
+      }
+      Session.set("currentUsername", username);
+
+      event.target.username.value = '';
       return false;
     }
   });
@@ -146,16 +208,33 @@ if (Meteor.isClient) {
       //Errors.update(this.parent, {$pull: {'hints': this.hintID}});
     },
     "click .upvote": function(event, template) {
-      Hints.update({"_id":this._id},{$inc: {upvotes:1}});
-      //e.preventDefault();
-      //Meteor.call('upvote', this._id);
-      //Errors.update(this._id, {$inc: {upvotes: 1}});
-      //Errors.update(this._id, {$inc: {hints: {hintMsg: upvotes: 1}}})
-      //Errors.update(this._id, {$inc: {hints: {hintMsg: hint, upvotes: 0}}});
-      //console.log('upvote',this._id, event, template, this)
+      // Old version:
+      // Hints.update({"_id":this._id},{$inc: {upvotes:1}});
+      currentUsername = Session.get("currentUsername");
+      hintID = this._id;
+      user = Users.findOne({username: currentUsername});
+      if($.inArray(hintID,user.upvoted)!==-1) { // if found
+        Hints.update(hintID,{$inc: {upvotes: -1}});
+        Users.update(user._id,{$pull: {upvoted: hintID}});
+      }
+      else {
+        Hints.update(hintID,{$inc: {upvotes: 1}});
+        Users.update(user._id,{$push: {upvoted: hintID}});
+      }
     },
     "click .addRequest": function(event, template) {
-        Errors.update({"_id":this._id},{$inc: {numRequests:1}})
+      //Errors.update({"_id":this._id},{$inc: {numRequests:1}})
+      currentUsername = Session.get("currentUsername");
+      errorID = this._id;
+      user = Users.findOne({username: currentUsername});
+      if($.inArray(errorID,user.followed)!==-1) {
+        Errors.update(errorID,{$inc: {numRequests: -1}});
+        Users.update(user._id,{$pull: {followed: errorID}});
+      }
+      else {
+        Errors.update(errorID,{$inc: {numRequests: 1}});
+        Users.update(user._id,{$push: {followed: errorID}});
+      }
     }
   });
 }
