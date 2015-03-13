@@ -12,12 +12,23 @@
     	  <h1>Dear Beta: An Advice Column for 6.004</h1>
         <form class="new-error-entry new-entry">
         <table>
-          {{> column_width}}    
+          {{> column_width}}
           <tr id="inputErrorCoords">
             <td></td>
-            <td><input type="text" placeholder="Checkoff File" name="errorCoord0" /></td>
-            <td><input type="text" placeholder="Nodes" name="errorCoord1"/></td>
-            <td><input type="text" placeholder="Time" name="errorCoord2" /></td>
+            <td>
+            <select required name="errorCoord0">
+              <option value="lab3/FA">lab3/FA</option>
+              <option value="lab3/alu">lab3/alu</option>
+              <option value="lab3/arith">lab3/arith</option>
+              <option value="lab3/bool">lab3/bool</option>
+              <option value="lab3/cmp">lab3/cmp</option>
+              <option value="lab3/shift">lab3/shift</option>
+            </select>
+            </td>
+            <!--td><input type="text" placeholder="CheckoffFile" name="errorCoord0" /></td-->
+            <td><input type="text" placeholder="Test Number" name="errorCoord1"/></td>
+            <td><input type="text" placeholder="Time (ns)" name="errorCoord2" /></td>
+
             <td>
               <button id="findorrequestbtn" class="btn btn-danger">
                 Find or Register Error
@@ -33,7 +44,6 @@
         </form>
     	</header>
       <div id="errorMessage">
-            
       </div>
     </div>
     <div id="errorHintTable_container">
@@ -41,10 +51,10 @@
         {{> column_width}}
         <thead>
     			<th>Requests</th>
-    			<th class="error_th">Checkoff File</th>
-          <th class="error_th">Nodes</th>
-          <th class="error_th">Time</th>
-    			<th>Hints</th>
+    			<th class="error_th">Module</th>
+          <th class="error_th">Test Number</th>
+          <th class="error_th">Time (ns)</th>
+    			<th>Hint</th>
           <th></th>
     		</thead>
         {{#each errors}}

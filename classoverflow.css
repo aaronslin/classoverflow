@@ -88,6 +88,7 @@ form {
   position: relative;
 }
 
+.new-entry select,
 .new-entry input,
 .new-entry textarea {
   box-sizing: border-box;
@@ -96,6 +97,7 @@ form {
   border: 1px solid #DEDEDE;
   width: 99%;
   font-size: 1em;
+  height: 40px;
 }
 
 .new-entry textarea:focus,

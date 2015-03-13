@@ -9,7 +9,7 @@ var loggedIn = 0;
 
 function scrollAndHighlight(scrollLocation) {
   $(scrollLocationPrevious).removeAttr("style");
-  $(scrollLocation).css("background-color","lightyellow");
+  $(scrollLocation).css("background-color","yellow");
   scrollLocationPrevious = scrollLocation;
   $('html, body').animate({
     scrollTop: $(scrollLocation).offset().top-130
@@ -46,7 +46,7 @@ if (Meteor.isClient) {
 
   Template.error_entry.helpers({
     hintIDs: function () {
-      return Errors.find({"_id": this._id}); 
+      return Errors.find({"_id": this._id});
     },
     sortedHints: function () {
       var hintIDList = this.hints.map(function(hintIDObject) {
@@ -96,13 +96,12 @@ if (Meteor.isClient) {
         return false;
       }
       else if (!parseInt(query1) || !parseInt(query2)) {
-        $("#errorMessage").html("The coordinates 'nodes' and 'time' must be integers.");
+        $("#errorMessage").html("Test number and time values must be integers.");
         $("#errorMessage").css("display","block").delay(2500).fadeOut(2000, "linear");
         return false;
       }
-
-      var query = Errors.findOne({"errorCoord0": query0, 
-                              "errorCoord1": parseInt(query1), 
+      var query = Errors.findOne({"errorCoord0": query0,
+                              "errorCoord1": parseInt(query1),
                               "errorCoord2": parseInt(query2)});
       //var query_count = query.count();
       //console.log(query_count);
@@ -131,8 +130,8 @@ if (Meteor.isClient) {
       };
 
       event.target.errorCoord0.value = ""; // Clear form
-      event.target.errorCoord1.value = ""; 
-      event.target.errorCoord2.value = ""; 
+      event.target.errorCoord1.value = "";
+      event.target.errorCoord2.value = "";
       document.activeElement.blur();
       return false;                 // Prevent default form submit
     },
@@ -154,7 +153,7 @@ if (Meteor.isClient) {
       function (err, object) {
         var hintID = object; // the _id of the hint
 
-        // Old version: 
+        // Old version:
         //Errors.update(errordbkey, {$push: {hints: {hintID: hintID}}});
         Errors.update(errordbkey, {$push: {hints: hintID}});
       });
