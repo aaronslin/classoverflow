@@ -24,7 +24,7 @@ if (Meteor.isClient) {
   // Template helpers
   Template.body.helpers({
     errors: function () {
-      return Errors.find({}, {sort: {errorCoord0: 1, errorCoord1: 1, errorCoord2:1}});
+      return Errors.find({}, {sort: {errorCoord0: 1, errorCoord1: 1}}); //, errorCoord2:1}});
     }
   });
 
@@ -90,19 +90,20 @@ if (Meteor.isClient) {
       //event.preventDefault();
       var query0 = event.target.errorCoord0.value;
       var query1 = event.target.errorCoord1.value;
-      var query2 = event.target.errorCoord2.value;
+      //var query2 = event.target.errorCoord2.value;
 
-      if (!query0 || !query1 || !query2) {
+      if (!query0 || !query1) { // || !query2) {
         return false;
       }
-      else if (!parseInt(query1) || !parseInt(query2)) {
-        $("#errorMessage").html("Test number and time values must be integers.");
+      else if (!parseInt(query1)){ // || !parseInt(query2)) {
+        //$("#errorMessage").html("Test number and time values must be integers.");
+        $("#errorMessage").html("Test number must be an integer.");
         $("#errorMessage").css("display","block").delay(2500).fadeOut(2000, "linear");
         return false;
       }
       var query = Errors.findOne({"errorCoord0": query0,
-                              "errorCoord1": parseInt(query1),
-                              "errorCoord2": parseInt(query2)});
+                              "errorCoord1": parseInt(query1)}); //,
+                              //"errorCoord2": parseInt(query2)});
       //var query_count = query.count();
       //console.log(query_count);
       // QUESTION: What's a work-around .findOne?
@@ -114,7 +115,7 @@ if (Meteor.isClient) {
           //errorID: query,
           errorCoord0 : query0,
           errorCoord1 : parseInt(query1),
-          errorCoord2 : parseInt(query2),
+          //errorCoord2 : parseInt(query2),
           createdAt: new Date(),
           hints: new Array(),
           numRequests: 1
@@ -131,7 +132,7 @@ if (Meteor.isClient) {
 
       event.target.errorCoord0.value = ""; // Clear form
       event.target.errorCoord1.value = "";
-      event.target.errorCoord2.value = "";
+      //event.target.errorCoord2.value = "";
       document.activeElement.blur();
       return false;                 // Prevent default form submit
     },
@@ -192,7 +193,7 @@ if (Meteor.isClient) {
     },
     "submit #feedback": function (event) {
       Feedback.insert({
-        user: Session.get("currentUsername"), 
+        user: Session.get("currentUsername"),
         feedback: event.target.feedback.value
       });
       event.target.feedback.value = '';

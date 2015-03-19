@@ -27,7 +27,7 @@
             </td>
             <!--td><input type="text" placeholder="CheckoffFile" name="errorCoord0" /></td-->
             <td><input type="text" placeholder="Test Number" name="errorCoord1"/></td>
-            <td><input type="text" placeholder="Time (ns)" name="errorCoord2" /></td>
+            <!--td><input type="text" placeholder="Time (ns)" name="errorCoord2" /></td-->
 
             <td>
               <button id="findorrequestbtn" class="btn btn-danger">
@@ -53,7 +53,7 @@
     			<th>Requests</th>
     			<th class="error_th">Module</th>
           <th class="error_th">Test Number</th>
-          <th class="error_th">Time (ns)</th>
+          <!--th class="error_th">Time (ns)</th-->
     			<th>Hint</th>
           <th></th>
     		</thead>
@@ -74,7 +74,7 @@
   	<td class="requests_td">
       <span class="request_btn">
         <button type="button" class="btn btn-default addRequest {{#if ifRequested}}requested{{else}}notrequested{{/if}}">
-          {{#if ifRequested}}Requested | {{numRequests}}{{else}}Request | {{numRequests}}{{/if}}
+          {{#if ifRequested}}Requested | <b>{{numRequests}}</b>{{else}}Request | <b>{{numRequests}}</b>{{/if}}
         </button>
       </span>
       <!--span class="request_count">
@@ -87,9 +87,9 @@
     <td class="errorID_td right-align">
       <span class="text">{{errorCoord1}}</span>
     </td>
-    <td class="errorID_td right-align">
+    <!--td class="errorID_td right-align">
       <span class="text">{{errorCoord2}}</span>
-    </td>
+    </td-->
   	<td class="hints_td">
   		<ul>
     		<li>
@@ -116,17 +116,19 @@
 <template name="hint_entry">
   <li>
     <div class="hintRow">
-  		<span class="upvote_btn">
+      <span class="upvote_btn">
         <button type="button" class="btn btn-default upvote {{#if ifUpvoted}}upvoted{{else}}notupvoted{{/if}}">
-          {{#if ifUpvoted}}Upvote{{else}}Upvote{{/if}}
+          {{#if ifUpvoted}}Upvote | <b>{{upvotes}}</b>{{else}}Upvote | <b>{{upvotes}}</b>{{/if}}
         </button>
       </span>
-      <span class="upvote_count">
+      <!--span class="upvote_count">
         {{upvotes}}
-      </span>
+      </span-->
+
       <span class="hintMsg_subcolumn">
         {{{lineBrokenHints hintMsg}}}
       </span>
+
     </div>
   </li>
 </template>
@@ -136,7 +138,7 @@
    <col span="1" style="width: 120px;">
    <col span="1" style="width: 150px;">
    <col span="1" style="width: 100px;">
-   <col span="1" style="width: 100px;">
+   <!--col span="1" style="width: 100px;"-->
    <col span="1" style="width: 450px;">
    <col span="1" style="width: 80px;">
   </colgroup>
