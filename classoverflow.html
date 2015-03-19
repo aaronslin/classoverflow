@@ -36,7 +36,7 @@
             </td>
             <td id="loginInfo_td">
               <div id="loginInfo">
-                
+
               </div>
             </td>
           </tr>
@@ -74,12 +74,12 @@
   	<td class="requests_td">
       <span class="request_btn">
         <button type="button" class="btn btn-default addRequest {{#if ifRequested}}requested{{else}}notrequested{{/if}}">
-          {{#if ifRequested}}Watch{{else}}Watch{{/if}}
+          {{#if ifRequested}}Requested | {{numRequests}}{{else}}Request | {{numRequests}}{{/if}}
         </button>
       </span>
-      <span class="request_count">
+      <!--span class="request_count">
         {{numRequests}}
-      </span>
+      </span-->
     </td>
    	<td class="errorID_td left-align">
 	    <span class="text">{{errorCoord0}}</span>
@@ -119,7 +119,7 @@
   		<span class="upvote_btn">
         <button type="button" class="btn btn-default upvote {{#if ifUpvoted}}upvoted{{else}}notupvoted{{/if}}">
           {{#if ifUpvoted}}Upvote{{else}}Upvote{{/if}}
-        </button> 
+        </button>
       </span>
       <span class="upvote_count">
         {{upvotes}}
@@ -173,4 +173,3 @@
     </form>
   </div>
 </template>
-
