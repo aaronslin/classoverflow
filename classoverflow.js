@@ -16,6 +16,81 @@ function scrollAndHighlight(scrollLocation) {
     }, 1000);
 }
 
+
+
+
+Meteor.methods({
+  addError: function(userID, query0, query1) {
+    Errors.insert({
+      errorCoord0 : query0,
+      errorCoord1 : parseInt(query1),
+      createdAt: new Date(),
+      hints: new Array(),
+      numRequests: 1
+    }, function(err,object){
+      scrollAndHighlight("#errorID-"+object);
+      Meteor.call("autoRequest", userID, object);
+      //Users.update(userID, {$push: {followed: object}});
+    });
+  },
+  addHint: function(errordbkey, hint) {
+    Hints.insert({
+      parent: errordbkey,
+      hintMsg: hint,
+      upvotes: 0
+    },
+    function (err, hintID) {
+      Errors.update(errordbkey, {$push: {hints: hintID}});
+      //Meteor.call('updateHintUser', errordbkey, object);
+    });
+  },
+  addUser: function(username) {
+    Users.insert({
+      username: username,
+      upvoted: new Array(),
+      followed: new Array(),
+      createdAt: new Date()
+    });
+  },
+  addFeedback: function(userID, text) {
+    Feedback.insert({
+      user: userID,
+      feedback: text
+    });
+  },
+  autoRequest: function(userID, object) {
+      alert(userID);
+      alert(object);
+    Users.update(userID,{$push: {followed: object}});
+  },
+  deleteError: function(id) {
+    Errors.remove(id);
+  },
+  upvoteHint: function(userID, hintID) {
+    Hints.update(hintID,{$inc: {upvotes: 1}});
+    Users.update(userID,{$push: {upvoted: hintID}});
+  },
+  downvoteHint: function(userID, hintID) {
+    Hints.update(hintID,{$inc: {upvotes: -1}});
+    Users.update(userID,{$pull: {upvoted: hintID}});
+  },
+  followError: function(userID, errorID) {
+    Errors.update(errorID,{$inc: {numRequests: 1}});
+    Users.update(userID,{$push: {followed: errorID}});
+  },
+  unfollowError: function(userID, errorID) {
+    Errors.update(errorID,{$inc: {numRequests: -1}});
+    Users.update(userID,{$pull: {followed: errorID}});
+  }
+});
+
+
+
+
+
+
+
+
 if (Meteor.isClient) {
   Meteor.startup(function () {
     Session.set("currentUsername","defaultUser");
@@ -25,6 +100,9 @@ if (Meteor.isClient) {
   Template.body.helpers({
     errors: function () {
       return Errors.find({}, {sort: {errorCoord0: 1, errorCoord1: 1}}); //, errorCoord2:1}});
+    },
+    defaultUser: function() {
+      Session.set("currentUsername", "defaultUser");
     }
   });
 
@@ -52,7 +130,7 @@ if (Meteor.isClient) {
       var hintIDList = this.hints.map(function(hintIDObject) {
         return hintIDObject;
       });
-      return Hints.find({"_id": {$in: hintIDList}}, {sort: {upvotes: -1}});
+      return Hints.find({"_id": {$in: hintIDList}}, {sort: {upvotes: -1, _id: 1}});
     },
     ifRequested: function () {
       currentUsername = Session.get("currentUsername");
@@ -111,19 +189,7 @@ if (Meteor.isClient) {
         currentUsername = Session.get("currentUsername");
         userID = Users.findOne({username: currentUsername})._id;
 
-        Errors.insert({
-          //errorID: query,
-          errorCoord0 : query0,
-          errorCoord1 : parseInt(query1),
-          //errorCoord2 : parseInt(query2),
-          createdAt: new Date(),
-          hints: new Array(),
-          numRequests: 1
-        }, function(err,object){
-          scrollAndHighlight("#errorID-"+object);
-          Users.update(userID, {$push: {followed: object}});
-        });
-        //console.log('Added to database successfully.');
+        Meteor.call("addError", userID, query0, query1);
       }
       else {
         scrollAndHighlight("#errorID-"+query._id);
@@ -146,19 +212,7 @@ if (Meteor.isClient) {
         return false;
       }
 
-      Hints.insert({
-        parent: errordbkey,
-        hintMsg: hint,
-        upvotes: 0
-      },
-      function (err, object) {
-        var hintID = object; // the _id of the hint
-
-        // Old version:
-        //Errors.update(errordbkey, {$push: {hints: {hintID: hintID}}});
-        Errors.update(errordbkey, {$push: {hints: hintID}});
-      });
-
+      Meteor.call("addHint",errordbkey,hint);
       //Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
 
       hintObject.value = "";
@@ -177,12 +231,7 @@ if (Meteor.isClient) {
       var query = Users.findOne({"username":username});
       if (!query) {
         // User not found
-        Users.insert({
-          username: username,
-          upvoted: new Array(),
-          followed: new Array(),
-          createdAt: new Date()
-        });
+        Meteor.call("addUser",username);
       }
 
       Session.set("currentUsername", username);
@@ -192,23 +241,18 @@ if (Meteor.isClient) {
       return false;
     },
     "submit #feedback": function (event) {
-      Feedback.insert({
-        user: Session.get("currentUsername"),
-        feedback: event.target.feedback.value
-      });
+      Meteor.call("addFeedback",
+          Session.get("currentUsername"),
+          event.target.feedback.value);
       event.target.feedback.value = '';
       return false;
     }
   });
 
   Template.error_entry.events({
-    "click .toggle-checked": function () {
-      // Set the checked property to the opposite of its current value
-      Errors.update(this._id, {$set: {checked: ! this.checked}});
-    },
     "click .delete_error": function () {
       // For each hint stored, delete the hint
-      Errors.remove(this._id);
+      Meteor.call("deleteError", this._id);
     },
     "click .delete_hint": function() {
       console.log(this);
@@ -221,14 +265,11 @@ if (Meteor.isClient) {
       currentUsername = Session.get("currentUsername");
       hintID = this._id;
       user = Users.findOne({username: currentUsername});
-      console.log(event.target);
       if($.inArray(hintID,user.upvoted)!==-1) { // if found
-        Hints.update(hintID,{$inc: {upvotes: -1}});
-        Users.update(user._id,{$pull: {upvoted: hintID}});
+        Meteor.call("downvoteHint", user._id, hintID);
       }
       else {
-        Hints.update(hintID,{$inc: {upvotes: 1}});
-        Users.update(user._id,{$push: {upvoted: hintID}});
+        Meteor.call("upvoteHint", user._id, hintID);
       }
       event.target.blur();
     },
@@ -238,12 +279,10 @@ if (Meteor.isClient) {
       errorID = this._id;
       user = Users.findOne({username: currentUsername});
       if($.inArray(errorID,user.followed)!==-1) {
-        Errors.update(errorID,{$inc: {numRequests: -1}});
-        Users.update(user._id,{$pull: {followed: errorID}});
+        Meteor.call("unfollowError", user._id, errorID);
       }
       else {
-        Errors.update(errorID,{$inc: {numRequests: 1}});
-        Users.update(user._id,{$push: {followed: errorID}});
+        Meteor.call("followError", user._id, errorID);
       }
       event.target.blur();
     }

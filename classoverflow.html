@@ -5,6 +5,7 @@
 </head>
 
 <body>
+  {{defaultUser}}
   {{> loginModal}}
   <div id="myContainer">
     <div id="header_container">
@@ -96,7 +97,7 @@
           <form class="new-hint-entry new-entry">
 	  	      <textarea class="hintTextarea" rows="1" placeholder="Add a hint!" style="height: 34px"></textarea>
 	  	 	  </form>
-       </li>
+        </li>
   			{{#each hintIDs}}
   				{{#each sortedHints}}
   					{{> hint_entry}}
