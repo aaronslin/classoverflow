@@ -9,10 +9,10 @@ var loggedIn = 0;
 
 function scrollAndHighlight(scrollLocation) {
   $(scrollLocationPrevious).removeAttr("style");
-  $(scrollLocation).css("background-color","yellow");
+  $(scrollLocation).css("background-color","lightyellow");
   scrollLocationPrevious = scrollLocation;
   $('html, body').animate({
-    scrollTop: $(scrollLocation).offset().top-160
+    scrollTop: $(scrollLocation).offset().top-135
     }, 1000);
 }
 
@@ -86,6 +86,7 @@ Meteor.methods({
 if (Meteor.isClient) {
   Meteor.startup(function () {
     Session.set("currentUsername","defaultUser");
+    Session.set("lastColWidth","10px");
   });
 
   // Template helpers
@@ -97,12 +98,14 @@ if (Meteor.isClient) {
 
   Template.body.events({
     "focus .hintTextarea": function(event) {
+      Session.set("lastColWidth","80px");
       submitObj = $("#errorID-"+this._id).find(".addHint");
       submitObj.fadeIn();
       var element = event.target;
       $(element).animate({height: "200px"}, 200);
     },
     "blur .hintTextarea": function(event) {
+      Session.set("lastColWidth","10px");
       var element = event.target;
       $(element).stop().animate({height: "34px"}, 200);
       submitObj = $("#errorID-"+this._id).find(".addHint");
@@ -151,6 +154,12 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.column_width.helpers({
+    lastColWidth: function () {
+      return Session.get("lastColWidth");
+    }
+  });
+
   Template.body.events({
     "submit .new-error-entry": function (event) {
       var query0 = event.target.errorCoord0.value;
@@ -174,7 +183,7 @@ if (Meteor.isClient) {
         userID = Users.findOne({username: currentUsername})._id;
 
         Meteor.call("addError", userID, query0, query1);
-        scrollAndHighlight("#errorID-"+object);
+        //scrollAndHighlight("#errorID-"+object);
       }
       else {
         scrollAndHighlight("#errorID-"+query._id);

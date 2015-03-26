@@ -16,6 +16,7 @@
           {{> column_width}}
           <tr id="inputErrorCoords">
             <td></td>
+            <td></td>
             <td>
             <select required name="errorCoord0">
               <option value="lab3/FA">lab3/FA</option>
@@ -51,11 +52,12 @@
     	<table id="errorHintTable">
         {{> column_width}}
         <thead>
+          <th></th>
     			<th>Requests</th>
     			<th class="error_th">Module</th>
           <th class="error_th">Test Number</th>
           <!--th class="error_th">Time (ns)</th-->
-    			<th>Hint</th>
+    			<th class="hint_th">Hint</th>
           <th></th>
     		</thead>
         {{#each errors}}
@@ -72,6 +74,7 @@
 
 <template name="error_entry">
   <tr id="errorID-{{_id}}" class="firstErrorRow">
+    <td></td>
   	<td class="requests_td">
       <span class="request_btn">
         <button type="button" class="btn btn-default addRequest {{#if ifRequested}}requested{{else}}notrequested{{/if}}">
@@ -136,12 +139,13 @@
 
 <template name="column_width">
   <colgroup>
+   <col span="1" style="width: 50px;">
    <col span="1" style="width: 120px;">
-   <col span="1" style="width: 150px;">
-   <col span="1" style="width: 100px;">
+   <col span="1" style="width: 130px;">
+   <col span="1" style="width: 120px;">
    <!--col span="1" style="width: 100px;"-->
    <col span="1" style="width: 450px;">
-   <col span="1" style="width: 80px;">
+   <col span="1" style="width: {{lastColWidth}};">
   </colgroup>
 </template>
 
@@ -155,7 +159,7 @@
           <div id="loginError">
             Please enter a valid Kerberos.
           </div>
-          <form class="new-entry" id="nickname">
+          <form class="new-user" id="nickname">
             <input type="text" placeholder=":)" name="username" />
           </form>
         </div>

@@ -40,21 +40,21 @@ header {
   background-color: #606060;
   //background-image: linear-gradient(to bottom, #2B3E42, #747E80 100%);
   padding: 0px;
-  padding-top: 20px;
+  padding-top: 0px;
   padding-bottom: 20px;
 }
 
 footer {
   background: #ECECEC;
   color: #DDDDDD;
-  height: 100px;
+  height: 50px;
   padding: 15px;
   margin-top: 50px;
 }
 
 table {
   margin-top: 10px;
-  margin-left: 50px;
+  //margin-left: 50px;
   margin-right: auto;
   padding-right: 20px;
   padding-left: 20px;
@@ -88,7 +88,18 @@ form {
   position: relative;
 }
 
-.new-entry select,
+.new-entry select {
+  box-sizing: border-box;
+  padding: 7px 7px;
+  height: 40px;
+  background-color: white;
+  border: 1px solid #DEDEDE;
+  width: 90%;
+  font-family: Courier;
+  font-size: 10pt;
+}
+
+.new-user input,
 .new-entry input,
 .new-entry textarea {
   box-sizing: border-box;
@@ -100,6 +111,12 @@ form {
   height: 40px;
 }
 
+.new-entry input {
+  font-family: Courier;
+  font-size: 10pt;
+}
+
+.new-user input:focus,
 .new-entry textarea:focus,
 .new-entry input:focus {
   outline: 0;
@@ -120,8 +137,8 @@ td {
 }
 
 th {
-  //text-align: center;
-  font-size: 1em;
+  font-size: 1.07em;
+  padding-bottom: 7px;
 }
 
 .delete {
@@ -195,7 +212,7 @@ header .hide-completed {
 }
 
 #errorHintTable {
-  margin-top: 150px;
+  margin-top: 130px;
 }
 
 #errorHintTable_container {
@@ -216,6 +233,8 @@ header .hide-completed {
   padding-right: 10px;
   padding-top: 15px;
   vertical-align: middle;
+  font-family: Courier;
+  font-size: 10pt;
 }
 
 .hints_td {
@@ -295,6 +314,10 @@ header .hide-completed {
 
 .error_th {
   text-align: left;
+  padding-left: 10px;
+}
+
+.hint_th {
   padding-left: 10px;
 }
 
