@@ -1,0 +1,72 @@
+Questions about Meteor
+
+3
+
+What is Mongo? Do we have to use Mongo? How does JS know it exists?
+Meteor.isClient - what is it?	
+
+Understand the code from clientSide codebox
+	Template.body.helpers?
+	Template.body.events?
+
+4
+
+Event listeners? Helpers?
+	resolved
+multiple dicts for find() func
+
+5
+
+Why is the delete section to the right of everything despite coming before the checked section in the code? CSS?
+	resolved
+
+----------------
+NEW QUESTIONS
+----------------
+
+Why does Errors.find({}, {sort: {errorID: 1}}); work? Shouldn't sort be method or an operator?
+
+Where does "this" come from? (How does javascript know what "this" is?)
+
+How come in the template you call {{hintMsg}} instead of {{hint.hintMsg}}?
+	Why do we quote these keys sometimes but not all the time?
+
+In function(event, ...), how does Meteor know what "event" is?
+
+
+---------------
+QUESTIONS 3/9
+---------------
+
+How to work with query.find()? (toArray, next, etc. don’t work, but count() does)
+
+Why can't I put javascript outside of the if(meteor.isClient)?
+
+Why am I getting so many exceptions when the page loads? I’m guessing that it’s complaining about not having a Session.get(“currentUsername”) value. How can I work around this?
+
+Why do I get internal server errors when I alert something in the follow/unfollow Meteor Methods?
+
+---------------
+OLD CODE
+---------------
+
+      /*var row = event.target;
+      while (row.parentNode && row.tagName.toLowerCase()!="tr") {
+        row = row.parentNode;
+      }
+      var errorDocs=Errors.find({"errorID": row.id});
+      alert(errorDocs.next());
+
+      if (errorDocs.count()==1) {
+        var aoeu = errorDocs.toArray()[0];
+        alert(aoeu);
+        aoeu.hints.insert({
+          hintMsg: hint,
+          upvotes:0
+        });
+      }
+      else {
+        alert("Something went wrong!");
+      }
+
+      alert("aoeu");*/

@@ -12,7 +12,7 @@ function scrollAndHighlight(scrollLocation) {
   $(scrollLocation).css("background-color","yellow");
   scrollLocationPrevious = scrollLocation;
   $('html, body').animate({
-    scrollTop: $(scrollLocation).offset().top-130
+    scrollTop: $(scrollLocation).offset().top-160
     }, 1000);
 }
 
@@ -26,11 +26,9 @@ Meteor.methods({
       errorCoord1 : parseInt(query1),
       createdAt: new Date(),
       hints: new Array(),
-      numRequests: 1
+      numRequests: 0
     }, function(err,object){
-      scrollAndHighlight("#errorID-"+object);
-      Meteor.call("autoRequest", userID, object);
-      //Users.update(userID, {$push: {followed: object}});
+      Meteor.call("followError", userID, object);
     });
   },
   addHint: function(errordbkey, hint) {
@@ -41,7 +39,6 @@ Meteor.methods({
     },
     function (err, hintID) {
       Errors.update(errordbkey, {$push: {hints: hintID}});
-      //Meteor.call('updateHintUser', errordbkey, object);
     });
   },
   addUser: function(username) {
@@ -57,11 +54,6 @@ Meteor.methods({
       user: userID,
       feedback: text
     });
-  },
-  autoRequest: function(userID, object) {
-      alert(userID);
-      alert(object);
-    Users.update(userID,{$push: {followed: object}});
   },
   deleteError: function(id) {
     Errors.remove(id);
@@ -100,9 +92,6 @@ if (Meteor.isClient) {
   Template.body.helpers({
     errors: function () {
       return Errors.find({}, {sort: {errorCoord0: 1, errorCoord1: 1}}); //, errorCoord2:1}});
-    },
-    defaultUser: function() {
-      Session.set("currentUsername", "defaultUser");
     }
   });
 
@@ -164,43 +153,37 @@ if (Meteor.isClient) {
 
   Template.body.events({
     "submit .new-error-entry": function (event) {
-      // This function is called when the search for ID/submit new ID blank is submitted
-      //event.preventDefault();
       var query0 = event.target.errorCoord0.value;
       var query1 = event.target.errorCoord1.value;
-      //var query2 = event.target.errorCoord2.value;
 
-      if (!query0 || !query1) { // || !query2) {
+      if (!query0 || !query1) {
         return false;
       }
-      else if (!parseInt(query1)){ // || !parseInt(query2)) {
+      else if (!parseInt(query1)){ 
         //$("#errorMessage").html("Test number and time values must be integers.");
         $("#errorMessage").html("Test number must be an integer.");
         $("#errorMessage").css("display","block").delay(2500).fadeOut(2000, "linear");
         return false;
       }
       var query = Errors.findOne({"errorCoord0": query0,
-                              "errorCoord1": parseInt(query1)}); //,
-                              //"errorCoord2": parseInt(query2)});
-      //var query_count = query.count();
-      //console.log(query_count);
+                              "errorCoord1": parseInt(query1)}); 
       // QUESTION: What's a work-around .findOne?
+
       if (!query) {
         currentUsername = Session.get("currentUsername");
         userID = Users.findOne({username: currentUsername})._id;
 
         Meteor.call("addError", userID, query0, query1);
+        scrollAndHighlight("#errorID-"+object);
       }
       else {
         scrollAndHighlight("#errorID-"+query._id);
-        //console.log('Error coordinates found.');
       };
 
-      event.target.errorCoord0.value = ""; // Clear form
+      event.target.errorCoord0.value = "";
       event.target.errorCoord1.value = "";
-      //event.target.errorCoord2.value = "";
       document.activeElement.blur();
-      return false;                 // Prevent default form submit
+      return false;
     },
     "click .addHint": function(event) {
       //var hint = event.target.text.value;
