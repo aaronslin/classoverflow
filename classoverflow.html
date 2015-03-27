@@ -7,6 +7,7 @@
 <body>
   {{defaultUser}}
   {{> loginModal}}
+  {{> feedbackModal2}}
   <div id="myContainer">
     <div id="header_container">
     	<header>
@@ -18,17 +19,19 @@
             <td></td>
             <td></td>
             <td>
-            <select required name="errorCoord0">
-              <option value="lab3/FA">lab3/FA</option>
-              <option value="lab3/alu">lab3/alu</option>
-              <option value="lab3/arith">lab3/arith</option>
-              <option value="lab3/bool">lab3/bool</option>
-              <option value="lab3/cmp">lab3/cmp</option>
-              <option value="lab3/shift">lab3/shift</option>
-            </select>
+              <select required name="errorCoord0">
+                <option value="lab3/FA">lab3/FA</option>
+                <option value="lab3/alu">lab3/alu</option>
+                <option value="lab3/arith">lab3/arith</option>
+                <option value="lab3/bool">lab3/bool</option>
+                <option value="lab3/cmp">lab3/cmp</option>
+                <option value="lab3/shift">lab3/shift</option>
+              </select>
             </td>
             <!--td><input type="text" placeholder="CheckoffFile" name="errorCoord0" /></td-->
-            <td><input type="text" placeholder="Test Number" name="errorCoord1"/></td>
+            <td>
+              <input type="text" placeholder="Test Number" name="errorCoord1"/>
+            </td>
             <!--td><input type="text" placeholder="Time (ns)" name="errorCoord2" /></td-->
 
             <td>
@@ -36,10 +39,8 @@
                 Find or Register Error
               </button>
             </td>
-            <td id="loginInfo_td">
-              <div id="loginInfo">
-
-              </div>
+            <td>
+              <a class='activateFeedback' href='#'>First modal window.</a>
             </td>
           </tr>
         </table>
@@ -64,7 +65,6 @@
           {{> error_entry}}
         {{/each}}
     	</table>
-      {{> feedbackBox}}
     </div>
     <footer>
       <!-- Nothing -->
@@ -139,7 +139,7 @@
 
 <template name="column_width">
   <colgroup>
-   <col span="1" style="width: 50px;">
+   <col span="1" style="width: 60px;">
    <col span="1" style="width: 120px;">
    <col span="1" style="width: 130px;">
    <col span="1" style="width: 120px;">
@@ -151,8 +151,8 @@
 
 
 <template name="loginModal">
-  <div class="modal in" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  <div class="login modal in" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="login modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
           <h4 class="modal-title" id="myModalLabel">Enter your Kerberos</h4>
@@ -160,23 +160,63 @@
             Please enter a valid Kerberos.
           </div>
           <form class="new-user" id="nickname">
-            <input type="text" placeholder=":)" name="username" />
+            <input type="text" class="new-user" placeholder=":)" name="username" />
           </form>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-  <div class="modal-backdrop fade in"></div>
+  <div class="modal-backdrop fade in login"></div>
 </template>
 
-<template name="feedbackBox">
-  <div class="affix feedback">
+
+<template name="feedbackModal">
+  <div id="feedbackModal" class="modal fade feedback">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to save changes you made to document before closing?</p>
+                <p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+  </div>
+</template>
+
+<template name="feedbackModal2">
+  <div class="feedbackdrop">
+  </div>
+  <div id="feedback-dialog">
     <h5>Feedback</h5>
+    <div class="feedbackdescription">
+      As this website is still in its alpha stage of development, we'd love to hear any questions, bugs, compliments, complaints, or suggestions!
+    </div>
     <form class="new-entry" id="feedback">
-      <textarea rows="7" placeholder="e.g. questions, bugs, compliments, criticisms, suggestions, etc." name="feedback"></textarea>
+      <textarea rows="5" placeholder="" name="feedback"></textarea>
       <button id="feedbackButton" class="btn btn-danger">
         Submit
       </button>
     </form>
   </div>
 </template>
+
+<!--template name="feedbackBox">
+  <div class="affix feedback">
+    <h5>Feedback</h5>
+    As this website is only in its alpha stage of development, we'd love to hear any questions, bugs, compliments, complaints, or suggestions!
+    <form class="new-entry" id="feedback">
+      <textarea rows="7" placeholder="" name="feedback"></textarea>
+      <button id="feedbackButton" class="btn btn-danger">
+        Submit
+      </button>
+    </form>
+  </div>
+</template-->

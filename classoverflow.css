@@ -38,7 +38,6 @@ body {
 
 header {
   background-color: #606060;
-  //background-image: linear-gradient(to bottom, #2B3E42, #747E80 100%);
   padding: 0px;
   padding-top: 0px;
   padding-bottom: 20px;
@@ -54,11 +53,10 @@ footer {
 
 table {
   margin-top: 10px;
-  //margin-left: 50px;
   margin-right: auto;
   padding-right: 20px;
   padding-left: 20px;
-  //border: 1px solid black;
+  table-layout: fixed;
 }
 
 #login-buttons {
@@ -88,32 +86,31 @@ form {
   position: relative;
 }
 
-.new-entry select {
-  box-sizing: border-box;
-  padding: 7px 7px;
-  height: 40px;
-  background-color: white;
-  border: 1px solid #DEDEDE;
-  width: 90%;
-  font-family: Courier;
-  font-size: 10pt;
-}
-
+.new-entry textarea,
+.new-entry select,
 .new-user input,
-.new-entry input,
-.new-entry textarea {
+.new-entry input {
   box-sizing: border-box;
   padding: 7px 7px;
   background: white;
   border: 1px solid #DEDEDE;
   width: 99%;
   font-size: 1em;
-  height: 40px;
 }
 
+.new-entry select {
+  width: 90%;
+}
+
+.new-entry select,
 .new-entry input {
   font-family: Courier;
   font-size: 10pt;
+  height: 40px;
+}
+
+.new-entry textarea {
+
 }
 
 .new-user input:focus,
@@ -361,6 +358,39 @@ header .hide-completed {
    display:block;
 }
 
+.feedbackdrop {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 100%;
+  background-color: #AAA;
+  opacity: 0.4;
+  display: none;
+  z-index: 998;
+}
+
+#feedback-dialog {
+  position: fixed;
+  z-index: 999;
+  background-color: white;
+  border: 1px solid #AAA;
+  width: 450px;
+  height: 255px;
+  padding: 10px;
+  top: 170px;
+  left: 50%;
+  margin-left: -225px;
+  display: none;
+}
+
+.feedbackdescription {
+  font-size: 13px;
+  color: #909090;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
 #loginInfo_td {
   position: absolute;
   top: 50%;
@@ -390,18 +420,6 @@ header .hide-completed {
   color: #900C0C;
   display: none;
 }
-
-/*.notvoted {
-  background-color: #BBB;
-  border: 1px solid #AAA;
-}
-
-.notvoted:hover,
-.notvoted:active,
-.notvoted:focus {
-  background-color: #AAA;
-  border: 1px solid #AAA;
-}*/
 
 #errorHintTable .btn {
   padding: 4px 8px;
@@ -440,13 +458,13 @@ header .hide-completed {
 }
 
 .affix {
-  bottom: 50px;
+  top: 135px;
   right: 50px;
-  width: 240px;
+  width: 250px;
   background-color: #D0EAFF;
   border: 1px solid #6194BC;
   height: 270px;
-  padding: 5px;
+  padding: 10px;
   padding-top: 10px;
 }
 

@@ -21,7 +21,7 @@ function scrollAndHighlight(scrollLocation) {
 
 Meteor.methods({
   addError: function(userID, query0, query1) {
-    Errors.insert({
+    object = Errors.insert({
       errorCoord0 : query0,
       errorCoord1 : parseInt(query1),
       createdAt: new Date(),
@@ -29,6 +29,7 @@ Meteor.methods({
       numRequests: 0
     }, function(err,object){
       Meteor.call("followError", userID, object);
+      Session.set("lastAdded", object);
     });
   },
   addHint: function(errordbkey, hint) {
@@ -86,7 +87,8 @@ Meteor.methods({
 if (Meteor.isClient) {
   Meteor.startup(function () {
     Session.set("currentUsername","defaultUser");
-    Session.set("lastColWidth","10px");
+    Session.set("lastColWidth","70px");
+    Session.set("feedbackOpen",false);
   });
 
   // Template helpers
@@ -98,19 +100,18 @@ if (Meteor.isClient) {
 
   Template.body.events({
     "focus .hintTextarea": function(event) {
-      Session.set("lastColWidth","80px");
+      Session.set("lastColWidth","70px");
       submitObj = $("#errorID-"+this._id).find(".addHint");
       submitObj.fadeIn();
       var element = event.target;
       $(element).animate({height: "200px"}, 200);
     },
     "blur .hintTextarea": function(event) {
-      Session.set("lastColWidth","10px");
       var element = event.target;
-      $(element).stop().animate({height: "34px"}, 200);
       submitObj = $("#errorID-"+this._id).find(".addHint");
-      //submitObj.css("display", "none");
       submitObj.fadeOut();
+      Session.set("lastColWidth","70px");
+      $(element).stop().animate({height: "34px"}, 200);
     }
   });
 
@@ -183,7 +184,9 @@ if (Meteor.isClient) {
         userID = Users.findOne({username: currentUsername})._id;
 
         Meteor.call("addError", userID, query0, query1);
-        //scrollAndHighlight("#errorID-"+object);
+        errorID = Session.get("lastAdded");
+        scrollAndHighlight("#errorID-"+errorID);
+        // QUESTION: How do you return from Meteor call?
       }
       else {
         scrollAndHighlight("#errorID-"+query._id);
@@ -236,8 +239,23 @@ if (Meteor.isClient) {
       Meteor.call("addFeedback",
           Session.get("currentUsername"),
           event.target.feedback.value);
+
+      Session.set("feedbackOpen",false);
+      $("#feedback-dialog").fadeOut(200);
+      $(".feedbackdrop").fadeOut(200);
+      
       event.target.feedback.value = '';
       return false;
+    },
+    "click .activateFeedback": function() {
+      Session.set("feedbackOpen",true);
+      $(".feedbackdrop").fadeIn(200);
+      $("#feedback-dialog").fadeIn(200);
+    },
+    "click .feedbackdrop": function() {
+      Session.set("feedbackOpen",false);
+      $("#feedback-dialog").fadeOut(200);
+      $(".feedbackdrop").fadeOut(200);
     }
   });
 
