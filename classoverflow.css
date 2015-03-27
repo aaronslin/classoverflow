@@ -296,6 +296,7 @@ header .hide-completed {
   float: left;
   width: 65px;
   display: table-cell;
+  margin-right: 10px;
 }
 
 .hintMsg_subcolumn {

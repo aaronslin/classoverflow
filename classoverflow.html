@@ -85,12 +85,13 @@
   	<td class="requests_td">
       <span class="request_btn">
         <button type="button" class="btn btn-default addRequest {{#if ifRequested}}requested{{else}}notrequested{{/if}}">
-          {{#if ifRequested}}Requested | <b>{{numRequests}}</b>{{else}}Request | <b>{{numRequests}}</b>{{/if}}
+          {{#if ifRequested}}Request{{else}}Request{{/if}}
+          <!-- | <b>{{numRequests}}</b> -->
         </button>
       </span>
-      <!--span class="request_count">
+      <span class="request_count">
         {{numRequests}}
-      </span-->
+      </span>
     </td>
    	<td class="errorID_td left-align">
 	    <span class="text">{{errorCoord0}}</span>
@@ -129,12 +130,13 @@
     <div class="hintRow">
       <span class="upvote_btn">
         <button type="button" class="btn btn-default upvote {{#if ifUpvoted}}upvoted{{else}}notupvoted{{/if}}">
-          {{#if ifUpvoted}}Upvote | <b>{{upvotes}}</b>{{else}}Upvote | <b>{{upvotes}}</b>{{/if}}
+          {{#if ifUpvoted}}Upvote{{else}}Upvote{{/if}} 
+          <!--| <b>{{upvotes}}</b>-->
         </button>
       </span>
-      <!--span class="upvote_count">
+      <span class="upvote_count">
         {{upvotes}}
-      </span-->
+      </span>
 
       <span class="hintMsg_subcolumn">
         {{{lineBrokenHints hintMsg}}}
