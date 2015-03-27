@@ -391,6 +391,24 @@ header .hide-completed {
   margin-bottom: 5px;
 }
 
+.findbtnclass,
+.linkBox {
+  display: table-cell;
+}
+
+.linkBox {
+  padding-left: 25px;
+  padding-top: 0px;
+  vertical-align: middle;
+  line-height: 90%;
+}
+
+.linkBox a {
+  color: #ECECEC;
+  font-size: 11px;
+  text-decoration: underline;
+}
+
 #loginInfo_td {
   position: absolute;
   top: 50%;
