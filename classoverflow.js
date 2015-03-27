@@ -89,6 +89,8 @@ if (Meteor.isClient) {
     Session.set("currentUsername","defaultUser");
     Session.set("lastColWidth","70px");
     Session.set("feedbackOpen",false);
+    Session.set("tabSubmit", false); 
+      // There has to be a better solution than this
   });
 
   // Template helpers
@@ -109,6 +111,17 @@ if (Meteor.isClient) {
     "blur .hintTextarea": function(event) {
       var element = event.target;
       submitObj = $("#errorID-"+this._id).find(".addHint");
+      if (!Session.get("tabSubmit")) {
+        submitObj.fadeOut();
+        Session.set("lastColWidth","70px");
+        $(element).stop().animate({height: "34px"}, 200);
+      }
+      Session.set("tabSubmit", false);
+    },
+    "blur .addHint": function(event) {
+      var submitObj =  $("#errorID-"+this._id).find(".addHint");
+      var element = $("#errorID-"+this._id).find(".hintTextarea");
+      console.log(element);
       submitObj.fadeOut();
       Session.set("lastColWidth","70px");
       $(element).stop().animate({height: "34px"}, 200);
@@ -199,6 +212,7 @@ if (Meteor.isClient) {
     },
     "click .addHint": function(event) {
       //var hint = event.target.text.value;
+      Session.set("tabSubmit", false);
       var errordbkey = this._id;
       var hintObject = $("#errorID-"+errordbkey).find('.hintTextarea')[0];
       var hint = hintObject.value;
@@ -243,7 +257,7 @@ if (Meteor.isClient) {
       Session.set("feedbackOpen",false);
       $("#feedback-dialog").fadeOut(200);
       $(".feedbackdrop").fadeOut(200);
-      
+
       event.target.feedback.value = '';
       return false;
     },
@@ -295,6 +309,16 @@ if (Meteor.isClient) {
         Meteor.call("followError", user._id, errorID);
       }
       event.target.blur();
+    },
+    "keydown .hintTextarea": function(event) {
+      if (event.keyCode == 9) {
+        event.preventDefault();
+        submitObj = $("#errorID-"+this._id).find(".addHint");
+        Session.set("tabSubmit",true);
+        submitObj.focus();
+      }
     }
   });
 }
+
+
