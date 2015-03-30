@@ -218,6 +218,10 @@ header .hide-completed {
 
 /*#errorHintTable tr > td {
   padding-top: 2px;
+}
+
+tr {
+  border-bottom: solid #606060 1px;
 }*/
 
 .requests_td {
@@ -277,7 +281,7 @@ header .hide-completed {
 }
 
 .upvote_btn {
-  float: left; 
+  float: left;
   width: 80px;
   display: table-cell;
 }

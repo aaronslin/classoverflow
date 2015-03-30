@@ -3,6 +3,7 @@ Errors = new Mongo.Collection("errors");
 Hints = new Mongo.Collection("hints");
 Users = new Mongo.Collection("users");
 Feedback = new Mongo.Collection("feedback");
+Log = new Mongo.Collection("log");
 
 var scrollLocationPrevious = "#inputErrorCoords";
 var loggedIn = 0;
@@ -17,7 +18,20 @@ function scrollAndHighlight(scrollLocation) {
 }
 
 
-
+if (Meteor.isServer) {
+  Meteor.publish("errors", function () {
+    return Errors.find();
+  });
+  Meteor.publish("hints", function () {
+    return Hints.find();
+  });
+  Meteor.publish("users", function () {
+    return Users.find();
+  });/*
+  Meteor.publish("feedback", function () {
+    return Feedback.find();
+  });*/
+}
 
 Meteor.methods({
   addError: function(userID, query0, query1) {
@@ -31,6 +45,7 @@ Meteor.methods({
       Meteor.call("followError", userID, object);
       Session.set("lastAdded", object);
     });
+    //logAction(action,value)
   },
   addHint: function(errordbkey, hint) {
     Hints.insert({
@@ -89,8 +104,12 @@ if (Meteor.isClient) {
     Session.set("currentUsername","defaultUser");
     Session.set("lastColWidth","70px");
     Session.set("feedbackOpen",false);
-    Session.set("tabSubmit", false); 
+    Session.set("tabSubmit", false);
       // There has to be a better solution than this
+
+    Meteor.subscribe("errors");
+    Meteor.subscribe("hints");
+    Meteor.subscribe("users");
   });
 
   // Template helpers
@@ -121,7 +140,7 @@ if (Meteor.isClient) {
     "blur .addHint": function(event) {
       var submitObj =  $("#errorID-"+this._id).find(".addHint");
       var element = $("#errorID-"+this._id).find(".hintTextarea");
-      console.log(element);
+      //console.log(element);
       submitObj.fadeOut();
       Session.set("lastColWidth","70px");
       $(element).stop().animate({height: "34px"}, 200);
@@ -158,6 +177,9 @@ if (Meteor.isClient) {
     },
     ifUpvoted: function () {
       currentUsername = Session.get("currentUsername");
+      if (!currentUsername) {
+        currentUsername = "defaultUser";
+      }
       upvoted = Users.findOne({username: currentUsername}).upvoted;
       if ($.inArray(this._id, upvoted)!==-1) {
         return true;
@@ -182,14 +204,14 @@ if (Meteor.isClient) {
       if (!query0 || !query1) {
         return false;
       }
-      else if (!parseInt(query1)){ 
+      else if (!parseInt(query1)){
         //$("#errorMessage").html("Test number and time values must be integers.");
         $("#errorMessage").html("Test number must be an integer.");
         $("#errorMessage").css("display","block").delay(2500).fadeOut(2000, "linear");
         return false;
       }
       var query = Errors.findOne({"errorCoord0": query0,
-                              "errorCoord1": parseInt(query1)}); 
+                              "errorCoord1": parseInt(query1)});
       // QUESTION: What's a work-around .findOne?
 
       if (!query) {
@@ -328,5 +350,3 @@ if (Meteor.isClient) {
     }
   });
 }
-
-
