@@ -7,7 +7,8 @@
 <body>
   {{defaultUser}}
   {{> loginModal}}
-  {{> feedbackModal2}}
+  {{> feedbackModal}}
+  {{> informationModal}}
   <div id="myContainer">
     <div id="header_container">
     	<header>
@@ -41,9 +42,9 @@
                 </button>
               </span>
               <span class="linkBox">
-                <a href="#">Instructions</a>
+                <a class="activateInstr" href="#">Instructions</a>
                 <br>
-                <a class='activateFeedback' href='#'>Feedback</a>
+                <a class='activateFeedback' href='#'>Submit Feedback</a>
               </span>
             </td>
             <td>
@@ -180,27 +181,6 @@
 
 
 <template name="feedbackModal">
-  <div id="feedbackModal" class="modal fade feedback">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Confirmation</h4>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to save changes you made to document before closing?</p>
-                <p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-  </div>
-</template>
-
-<template name="feedbackModal2">
   <div class="feedbackdrop">
   </div>
   <div id="feedback-dialog">
@@ -216,6 +196,19 @@
     </form>
   </div>
 </template>
+
+
+<template name="informationModal">
+  <div class="infobackdrop">
+  </div>
+  <div id="information-dialog">
+    <h5>Instructions</h5>
+    <div class="feedbackdescription">
+      Insert instructions
+    </div>
+  </div>
+</template>
+
 
 <!--template name="feedbackBox">
   <div class="affix feedback">

@@ -270,6 +270,14 @@ if (Meteor.isClient) {
       Session.set("feedbackOpen",false);
       $("#feedback-dialog").fadeOut(200);
       $(".feedbackdrop").fadeOut(200);
+    },
+    "click .activateInstr": function() {
+      $(".infobackdrop").fadeIn(200);
+      $("#information-dialog").fadeIn(200);
+    },
+    "click .infobackdrop": function() {
+      $(".infobackdrop").fadeOut(200);
+      $("#information-dialog").fadeOut(200);
     }
   });
 

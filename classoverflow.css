@@ -359,7 +359,8 @@ header .hide-completed {
    display:block;
 }
 
-.feedbackdrop {
+.feedbackdrop,
+.infobackdrop {
   position: fixed;
   left: 0px;
   top: 0px;
@@ -371,7 +372,8 @@ header .hide-completed {
   z-index: 998;
 }
 
-#feedback-dialog {
+#feedback-dialog,
+#information-dialog {
   position: fixed;
   z-index: 999;
   background-color: white;
