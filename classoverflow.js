@@ -125,7 +125,7 @@ if (Meteor.isClient) {
 
     Meteor.subscribe("errors");
     Meteor.subscribe("hints");
-    Meteor.subscribe("users");
+    Meteor.subscribe("users","aaronlin");
   });
 
   // Template helpers
@@ -174,14 +174,17 @@ if (Meteor.isClient) {
     },
     ifRequested: function () {
       currentUsername = Session.get("currentUsername");
-      followed = Users.findOne({username: currentUsername}).followed;
+      var user = Users.findOne({username: currentUsername});
+      if (!user) {
+        return false;
+      }
+      var followed = user.followed;
       if ($.inArray(this._id, followed)!==-1) {
         return true;
       }
       else {
         return false;
       }
-
     }
   });
 
@@ -192,10 +195,11 @@ if (Meteor.isClient) {
     },
     ifUpvoted: function () {
       currentUsername = Session.get("currentUsername");
-      if (!currentUsername) {
-        currentUsername = "defaultUser";
+      var user = Users.findOne({username: currentUsername});
+      if (!user) {
+        return false;
       }
-      upvoted = Users.findOne({username: currentUsername}).upvoted;
+      var upvoted = user.upvoted;
       if ($.inArray(this._id, upvoted)!==-1) {
         return true;
       }
