@@ -13,7 +13,7 @@ function scrollAndHighlight(scrollLocation) {
   $(scrollLocation).css("background-color","lightyellow");
   scrollLocationPrevious = scrollLocation;
   $('html, body').animate({
-    scrollTop: $(scrollLocation).offset().top-135
+    scrollTop: $(scrollLocation).offset().top-95
     }, 1000);
 }
 
@@ -233,10 +233,9 @@ if (Meteor.isClient) {
                               "errorCoord1": parseInt(query1)});
       // QUESTION: What's a work-around .findOne?
 
+      currentUsername = Session.get("currentUsername");
+      userID = Users.findOne({username: currentUsername})._id;
       if (!query) {
-        currentUsername = Session.get("currentUsername");
-        userID = Users.findOne({username: currentUsername})._id;
-
         Meteor.call("addError", userID, query0, query1);
         errorID = Session.get("lastAdded");
         scrollAndHighlight("#errorID-"+errorID);
@@ -244,6 +243,7 @@ if (Meteor.isClient) {
       }
       else {
         scrollAndHighlight("#errorID-"+query._id);
+        Meteor.call("logAction","searchError",userID,query._id);
       };
 
       event.target.errorCoord0.value = "";

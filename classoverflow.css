@@ -40,7 +40,8 @@ header {
   background-color: #606060;
   padding: 0px;
   padding-top: 0px;
-  padding-bottom: 20px;
+  /*padding-bottom: 20px;*/
+  padding-bottom: 10px;
 }
 
 footer {
@@ -59,6 +60,14 @@ table {
   table-layout: fixed;
 }
 
+#errorHintTable {
+  margin-top: 90px;
+}
+
+#errorHintTable_container {
+  padding-top: 20px;
+}
+
 #login-buttons {
   display: block;
 }
@@ -66,8 +75,9 @@ table {
 h1 {
   font-size: 1.7em;
   margin: 0;
-  margin-bottom: 10px;
-  margin-top: 30px;
+  /*margin-bottom: 10px;
+  margin-top: 30px;*/
+  margin-top: 10px;
   display: inline-block;
   margin-right: 1em;
   margin-left: 100px;
@@ -206,14 +216,6 @@ header .hide-completed {
 
 .upvotebadge {
   color: gray;
-}
-
-#errorHintTable {
-  margin-top: 130px;
-}
-
-#errorHintTable_container {
-  padding-top: 20px;
 }
 
 /*#errorHintTable tr > td {
