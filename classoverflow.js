@@ -25,12 +25,9 @@ if (Meteor.isServer) {
   Meteor.publish("hints", function () {
     return Hints.find();
   });
-  Meteor.publish("users", function () {
-    return Users.find();
-  });/*
-  Meteor.publish("feedback", function () {
-    return Feedback.find();
-  });*/
+  Meteor.publish("users", function (username) {
+    return Users.find({username: username});
+  });
 }
 
 Meteor.methods({
@@ -41,20 +38,21 @@ Meteor.methods({
       createdAt: new Date(),
       hints: new Array(),
       numRequests: 0
-    }, function(err,object){
-      Meteor.call("followError", userID, object);
-      Session.set("lastAdded", object);
+    }, function(err,result){
+      Meteor.call("logAction","addError",userID,result);
+      Meteor.call("followError", userID, result);
+      Session.set("lastAdded", result);
     });
-    //logAction(action,value)
   },
-  addHint: function(errordbkey, hint) {
+  addHint: function(userID, errordbkey, hint) {
     Hints.insert({
       parent: errordbkey,
       hintMsg: hint,
       upvotes: 0
     },
-    function (err, hintID) {
-      Errors.update(errordbkey, {$push: {hints: hintID}});
+    function (err, result) {
+      Meteor.call("logAction","addHint",userID,result);
+      Errors.update(errordbkey, {$push: {hints: result}});
     });
   },
   addUser: function(username) {
@@ -63,12 +61,19 @@ Meteor.methods({
       upvoted: new Array(),
       followed: new Array(),
       createdAt: new Date()
+    },
+    function (err, result) {
+      console.log(result);
+      Meteor.call("logAction","addUser",result,"");
     });
   },
   addFeedback: function(userID, text) {
     Feedback.insert({
       user: userID,
       feedback: text
+    },
+    function (err, result) {
+      Meteor.call("logAction","addFeedback",userID,result);
     });
   },
   deleteError: function(id) {
@@ -77,19 +82,31 @@ Meteor.methods({
   upvoteHint: function(userID, hintID) {
     Hints.update(hintID,{$inc: {upvotes: 1}});
     Users.update(userID,{$push: {upvoted: hintID}});
+    Meteor.call("logAction","upvoteHint",userID,hintID);
   },
   downvoteHint: function(userID, hintID) {
     Hints.update(hintID,{$inc: {upvotes: -1}});
     Users.update(userID,{$pull: {upvoted: hintID}});
+    Meteor.call("logAction","downvoteHint",userID,hintID);
   },
   followError: function(userID, errorID) {
     Errors.update(errorID,{$inc: {numRequests: 1}});
     Users.update(userID,{$push: {followed: errorID}});
+    Meteor.call("logAction","followError",userID,errorID);
   },
   unfollowError: function(userID, errorID) {
     Errors.update(errorID,{$inc: {numRequests: -1}});
     Users.update(userID,{$pull: {followed: errorID}});
-  }
+    Meteor.call("logAction","followError",userID,errorID);
+  },
+  logAction: function(action, userID, element) {
+    Log.insert({
+      action: action,
+      userID: userID,
+      element: element,
+      time: new Date()
+    });
+  }  
 });
 
 
@@ -101,7 +118,7 @@ Meteor.methods({
 
 if (Meteor.isClient) {
   Meteor.startup(function () {
-    Session.set("currentUsername","defaultUser");
+    Session.set("currentUsername","defaultuser");
     Session.set("lastColWidth","70px");
     Session.set("feedbackOpen",false);
     Session.set("tabSubmit", false);
@@ -140,7 +157,6 @@ if (Meteor.isClient) {
     "blur .addHint": function(event) {
       var submitObj =  $("#errorID-"+this._id).find(".addHint");
       var element = $("#errorID-"+this._id).find(".hintTextarea");
-      //console.log(element);
       submitObj.fadeOut();
       Session.set("lastColWidth","70px");
       $(element).stop().animate({height: "34px"}, 200);
@@ -243,7 +259,9 @@ if (Meteor.isClient) {
         return false;
       }
 
-      Meteor.call("addHint",errordbkey,hint);
+      var currentUsername = Session.get("currentUsername");
+      var userID = Users.findOne({username: currentUsername})._id;
+      Meteor.call("addHint",userID,errordbkey,hint);
       //Errors.update(this._id, {$push: {hints: {hintMsg: hint, upvotes: 0}}});
 
       hintObject.value = "";
@@ -256,16 +274,17 @@ if (Meteor.isClient) {
         event.target.username.value = '';
         return false;
       }
-      //$("#loginInfo").html("Logged in as: "+username);
+      Session.set("currentUsername", username);
 
       // Find in database
       var query = Users.findOne({"username":username});
-      if (!query) {
-        // User not found
+      if (!query) { // User not found
         Meteor.call("addUser",username);
       }
-
-      Session.set("currentUsername", username);
+      else {
+        Meteor.call("logAction","login",query._id,"");
+      }
+      Meteor.subscribe("users",username);
 
       $(".in").css("display","none");
       event.target.username.value = '';
@@ -316,9 +335,10 @@ if (Meteor.isClient) {
     "click .upvote": function(event, template) {
       // Old version:
       // Hints.update({"_id":this._id},{$inc: {upvotes:1}});
-      currentUsername = Session.get("currentUsername");
       hintID = this._id;
-      user = Users.findOne({username: currentUsername});
+
+      currentUsername = Session.get("currentUsername");
+      var user = Users.findOne({username: currentUsername});
       if($.inArray(hintID,user.upvoted)!==-1) { // if found
         Meteor.call("downvoteHint", user._id, hintID);
       }
@@ -329,9 +349,9 @@ if (Meteor.isClient) {
     },
     "click .addRequest": function(event, template) {
       //Errors.update({"_id":this._id},{$inc: {numRequests:1}})
-      currentUsername = Session.get("currentUsername");
       errorID = this._id;
-      user = Users.findOne({username: currentUsername});
+      currentUsername = Session.get("currentUsername");
+      var user = Users.findOne({username: currentUsername});
       if($.inArray(errorID,user.followed)!==-1) {
         Meteor.call("unfollowError", user._id, errorID);
       }
