@@ -63,7 +63,6 @@ Meteor.methods({
       createdAt: new Date()
     },
     function (err, result) {
-      console.log(result);
       Meteor.call("logAction","addUser",result,"");
     });
   },
@@ -275,16 +274,17 @@ if (Meteor.isClient) {
         return false;
       }
       Session.set("currentUsername", username);
+      Meteor.subscribe("users",username, function(err,result){
+        var query = Users.findOne({"username":username});
+        if (!query) { // User not found
+          Meteor.call("addUser",username);
+        }
+        else {
+          Meteor.call("logAction","login",query._id,"");
+        }
+      });
 
-      // Find in database
-      var query = Users.findOne({"username":username});
-      if (!query) { // User not found
-        Meteor.call("addUser",username);
-      }
-      else {
-        Meteor.call("logAction","login",query._id,"");
-      }
-      Meteor.subscribe("users",username);
+
 
       $(".in").css("display","none");
       event.target.username.value = '';
