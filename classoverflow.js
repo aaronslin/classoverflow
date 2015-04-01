@@ -125,7 +125,7 @@ if (Meteor.isClient) {
 
     Meteor.subscribe("errors");
     Meteor.subscribe("hints");
-    Meteor.subscribe("users","aaronlin");
+    Meteor.subscribe("users","defaultuser");
   });
 
   // Template helpers
