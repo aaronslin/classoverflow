@@ -109,7 +109,9 @@ Meteor.methods({
 });
 
 
-
+Router.route('/', function () {
+  this.render('originalView');
+});
 
 Router.route('/about', function () {
   this.render('about');
