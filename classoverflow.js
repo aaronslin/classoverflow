@@ -111,8 +111,9 @@ Meteor.methods({
 
 
 
-
-
+Router.route('/about', function () {
+  this.render('about');
+});
 
 
 if (Meteor.isClient) {
