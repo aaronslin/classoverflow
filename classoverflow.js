@@ -9,6 +9,7 @@ var scrollLocationPrevious = "#inputErrorCoords";
 var loggedIn = 0;
 
 function scrollAndHighlight(scrollLocation) {
+  console.log('scrollLocation',scrollLocation)
   $(scrollLocationPrevious).removeAttr("style");
   $(scrollLocation).css("background-color","lightyellow");
   scrollLocationPrevious = scrollLocation;
@@ -117,10 +118,14 @@ Router.route('/about', function () {
   this.render('about');
 });
 
+Router.route('/module/:someParameter', function(){
+    console.log(this.params.someParameter);
+});
+
 
 if (Meteor.isClient) {
   Meteor.startup(function () {
-    Session.set("currentUsername","defaultuser");
+    Session.set("currentUsername","defaultuser"); //this is where we'll get it from elsewhere?
     Session.set("lastColWidth","70px");
     Session.set("feedbackOpen",false);
     Session.set("tabSubmit", false);
